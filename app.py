@@ -13,16 +13,20 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(
     st.secrets["gcp_service_account"], scope
 )
 
-try:
-    client = gspread.authorize(creds)
-    sheet = client.open("Encuesta_Comercio_2025").worksheet("Respuestas")
-except Exception:
-    st.error("❌ No se pudo acceder a la hoja de cálculo. Verifica nombre, hoja y permisos.")
-    st.stop()
+# === FUNCIÓN SEGURA PARA CONECTAR A GOOGLE SHEETS ===
+def conectar_google_sheets():
+    try:
+        client = gspread.authorize(creds)
+        return client.open("Encuesta_Comercio_2025").worksheet("Respuestas")
+    except Exception as e:
+        st.error("❌ No se pudo acceder a la hoja de cálculo. Verifica nombre, hoja y permisos.")
+        return None
 
-# === ESTADO PARA UBICACIÓN ===
+# === INICIALIZAR ESTADO ===
 if "ubicacion" not in st.session_state:
     st.session_state.ubicacion = None
+if "enviado" not in st.session_state:
+    st.session_state.enviado = False
 
 # === FORMULARIO ===
 st.title("Encuesta Comercio - Guanacaste")
@@ -40,23 +44,20 @@ tipo_local = st.selectbox("Tipo de local", [
     "Tienda de artículos", "Gasolineras", "Servicios estéticos", "Puesto de lotería", "Otro"
 ])
 
-# === MAPA DINÁMICO ===
+# === MAPA INTERACTIVO ===
 st.markdown("### Haga clic en el mapa para seleccionar o cambiar su ubicación:")
 
-mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
+m = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-# Mostrar pin si ya se ha hecho clic
 if st.session_state.ubicacion:
     folium.Marker(
         location=st.session_state.ubicacion,
         tooltip="Ubicación seleccionada",
         icon=folium.Icon(color="blue", icon="map-marker")
-    ).add_to(mapa)
+    ).add_to(m)
 
-# Mostrar el mapa e interpretar clic
-map_click = st_folium(mapa, width=700, height=500)
+map_click = st_folium(m, width=700, height=500)
 
-# Si hay nuevo clic, actualizar la ubicación
 if map_click and map_click.get("last_clicked"):
     lat = map_click["last_clicked"]["lat"]
     lon = map_click["last_clicked"]["lng"]
@@ -66,7 +67,6 @@ if map_click and map_click.get("last_clicked"):
 if st.button("Enviar"):
     errores = []
 
-    # Verificar cada campo
     if not edad:
         errores.append("Edad")
     if not distrito:
@@ -85,7 +85,6 @@ if st.button("Enviar"):
     else:
         lat, lon = st.session_state.ubicacion
         ubicacion_url = f"https://www.google.com/maps?q={lat},{lon}"
-
         datos = [
             datetime.now().isoformat(),
             canton,
@@ -97,11 +96,13 @@ if st.button("Enviar"):
             ubicacion_url
         ]
 
-        try:
-            sheet.append_row(datos)
-            st.success("✅ Respuesta enviada correctamente.")
-            # Reiniciar formulario
-            st.session_state.ubicacion = None
-        except Exception as e:
-            st.error("❌ Error al guardar la respuesta. Intente de nuevo.")
+        sheet = conectar_google_sheets()
+        if sheet:
+            try:
+                sheet.append_row(datos)
+                st.success("✅ Respuesta enviada correctamente.")
+                st.session_state.ubicacion = None
+                st.session_state.enviado = True
+            except Exception:
+                st.error("❌ Error al guardar la respuesta. Intente de nuevo.")
 
