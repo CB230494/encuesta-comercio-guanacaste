@@ -317,7 +317,7 @@ if not st.session_state.enviado:
         if not st.session_state.ubicacion:
             errores.append("Ubicación en el mapa")
         
-        # Validar que campos básicos no estén vacíos
+        # Validar campos básicos
         if not distrito:
             errores.append("Distrito")
         if not sexo:
@@ -398,8 +398,7 @@ if not st.session_state.enviado:
                 try:
                     sheet.append_row(datos)
                     st.session_state.enviado = True
-                    st.success("✅ ¡Formulario enviado correctamente!")
-                    st.stop()
+                    st.experimental_rerun()
                 except Exception:
                     st.error("❌ Error al guardar la respuesta. Intente de nuevo.")
 else:
