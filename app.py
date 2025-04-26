@@ -8,7 +8,12 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 # === CONFIGURACIÓN DE GOOGLE SHEETS ===
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("client_secret.json", scope)
+
+# USAR st.secrets para acceder a las credenciales desde Streamlit Cloud
+creds = ServiceAccountCredentials.from_json_keyfile_dict(
+    st.secrets["gcp_service_account"], scope
+)
+
 client = gspread.authorize(creds)
 sheet = client.open("Encuesta_Comercio_2025").worksheet("Respuestas")
 
@@ -28,6 +33,7 @@ tipo_local = st.selectbox("Tipo de local", [
     "Tienda de artículos", "Gasolineras", "Servicios estéticos", "Puesto de lotería", "Otro"
 ])
 
+# === MAPA INTERACTIVO ===
 st.markdown("### Seleccione su ubicación en el mapa:")
 m = folium.Map(location=[10.3, -85.8], zoom_start=11)
 marker = folium.Marker(location=[10.3, -85.8], draggable=True)
