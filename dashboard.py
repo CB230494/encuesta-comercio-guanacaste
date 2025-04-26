@@ -1,5 +1,3 @@
-# === DASHBOARD STREAMLIT: Análisis de Formularios ===
-
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -15,7 +13,6 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(
     st.secrets["gcp_service_account"], scope
 )
 
-# === FUNCIÓN PARA CARGAR DATOS DE GOOGLE SHEETS ===
 def cargar_datos():
     client = gspread.authorize(creds)
     sheet = client.open("Encuesta_Comercio_2025").worksheet("Respuestas")
@@ -27,7 +24,6 @@ def cargar_datos():
 st.set_page_config(page_title="Dashboard Comercio Guanacaste", layout="wide")
 st.title("📊 Dashboard Encuesta Comercio - Guanacaste")
 
-# Cargar datos
 df = cargar_datos()
 
 if df.empty:
@@ -44,7 +40,7 @@ else:
     # === MÉTRICAS ===
     st.metric("📋 Total de Formularios Recibidos", len(df))
 
-    # === GRÁFICA DE PERCEPCIÓN DE SEGURIDAD ===
+    # === PERCEPCIÓN DE SEGURIDAD ===
     if "Percepción de seguridad" in df.columns:
         st.subheader("Percepción de Seguridad")
         fig1 = px.pie(
@@ -55,7 +51,7 @@ else:
         )
         st.plotly_chart(fig1, use_container_width=True)
 
-    # === GRÁFICA DE FACTORES DE INSEGURIDAD ===
+    # === FACTORES DE INSEGURIDAD ===
     if "Factores de inseguridad (selección múltiple)" in df.columns:
         st.subheader("Factores de Inseguridad Reportados")
         factores = df["Factores de inseguridad (selección múltiple)"].dropna().str.split(", ")
@@ -115,7 +111,7 @@ else:
         else:
             st.info("No hay datos suficientes sobre modos de operar.")
 
-    # === HORARIO DE HECHOS DELICTIVOS ===
+    # === HORARIOS DE DELITOS ===
     if "¿Conoce el horario en el que ocurrió el hecho delictivo?" in df.columns:
         st.subheader("Horarios en los que ocurren más delitos")
         horario_df = df["¿Conoce el horario en el que ocurrió el hecho delictivo?"].dropna()
@@ -141,7 +137,7 @@ else:
         else:
             st.info("No hay datos suficientes sobre horarios.")
 
-    # === MAPA DE UBICACIONES ===
+    # === MAPA DE UBICACIONES CON COLORES POR DISTRITO ===
     st.subheader("Ubicaciones de Formularios Registrados")
 
     def extraer_lat_lon(url):
@@ -154,15 +150,27 @@ else:
         except:
             return None, None
 
-    if "Link ubicación" in df.columns:
-        ubicaciones = df["Link ubicación"].apply(lambda x: extraer_lat_lon(x))
+    if "Ubicación (enlace)" in df.columns and not df["Ubicación (enlace)"].dropna().empty:
+        ubicaciones = df["Ubicación (enlace)"].apply(lambda x: extraer_lat_lon(x))
+        distritos_mapa = df["Distrito"]
 
         m = folium.Map(location=[10.3, -85.8], zoom_start=11)
 
-        for ubicacion in ubicaciones:
+        colores_distrito = {
+            "Tamarindo": "blue",
+            "Cartagena": "green",
+            "Cabo Velas": "red"
+        }
+
+        for (ubicacion, distrito) in zip(ubicaciones, distritos_mapa):
             if ubicacion and ubicacion[0] is not None:
-                folium.Marker(location=[ubicacion[0], ubicacion[1]], icon=folium.Icon(color="blue")).add_to(m)
+                color_pin = colores_distrito.get(distrito, "gray")
+                folium.Marker(
+                    location=[ubicacion[0], ubicacion[1]],
+                    tooltip=distrito,
+                    icon=folium.Icon(color=color_pin)
+                ).add_to(m)
 
         st_folium(m, width=800, height=500)
     else:
-        st.info("No se encontró información de ubicaciones.")
+        st.info("No hay ubicaciones registradas aún en los formularios.")
