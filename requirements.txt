@@ -4,3 +4,4 @@ oauth2client
 folium
 streamlit-folium
 pandas
+plotly
