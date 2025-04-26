@@ -32,37 +32,44 @@ tipo_local = st.selectbox("Tipo de local", [
     "Tienda de artículos", "Gasolineras", "Servicios estéticos", "Puesto de lotería", "Otro"
 ])
 
-# === MAPA INTERACTIVO CON PIN VISIBLE ===
+# === MAPA ÚNICO CON PIN DINÁMICO ===
 st.markdown("### Seleccione su ubicación en el mapa (haga clic):")
 
-# Coordenadas por defecto (centro en Guanacaste)
-lat_default = 10.3
-lon_default = -85.8
+# Coordenadas base
+center_lat, center_lon = 10.3, -85.8
 
-# Capturar clic
-map_click = st_folium(
-    folium.Map(location=[lat_default, lon_default], zoom_start=13),
-    width=700, height=500
-)
+# Detectar clic anterior guardado en estado
+if "ubicacion" not in st.session_state:
+    st.session_state.ubicacion = None
 
-ubicacion_url = None
+# Crear mapa inicial
+m = folium.Map(location=[center_lat, center_lon], zoom_start=13)
 
-# Si el usuario hace clic, se genera nuevo mapa con pin
-if map_click and map_click.get("last_clicked"):
-    lat = map_click["last_clicked"]["lat"]
-    lon = map_click["last_clicked"]["lng"]
-    ubicacion_url = f"https://www.google.com/maps?q={lat},{lon}"
-
-    # Redibujar mapa con el pin visible
-    mapa = folium.Map(location=[lat, lon], zoom_start=16)
+# Si ya se ha hecho clic, agregar pin
+if st.session_state.ubicacion:
     folium.Marker(
-        location=[lat, lon],
+        location=st.session_state.ubicacion,
         tooltip="Ubicación seleccionada",
         icon=folium.Icon(color="blue", icon="map-marker")
-    ).add_to(mapa)
+    ).add_to(m)
+else:
+    # Mostrar mensaje si aún no hay selección
+    st.caption("Haz clic en el mapa para seleccionar la ubicación.")
 
-    st.markdown("### Pin seleccionado:")
-    st_folium(mapa, width=700, height=500)
+# Mostrar mapa y capturar clic
+map_data = st_folium(m, width=700, height=500)
+
+# Actualizar estado con nuevo clic
+if map_data and map_data.get("last_clicked"):
+    lat = map_data["last_clicked"]["lat"]
+    lon = map_data["last_clicked"]["lng"]
+    st.session_state.ubicacion = [lat, lon]
+    ubicacion_url = f"https://www.google.com/maps?q={lat},{lon}"
+else:
+    ubicacion_url = None
+    if st.session_state.ubicacion:
+        lat, lon = st.session_state.ubicacion
+        ubicacion_url = f"https://www.google.com/maps?q={lat},{lon}"
 
 # === BOTÓN DE ENVÍO ===
 if st.button("Enviar"):
@@ -72,5 +79,7 @@ if st.button("Enviar"):
         datos = [datetime.now().isoformat(), canton, distrito, edad, sexo, escolaridad, tipo_local, ubicacion_url]
         sheet.append_row(datos)
         st.success("¡Gracias! Tu respuesta fue registrada.")
+        st.session_state.ubicacion = None  # Reiniciar después del envío
+
 
 
