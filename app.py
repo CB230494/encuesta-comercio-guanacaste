@@ -6,7 +6,7 @@ from streamlit_folium import st_folium
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-# === CONFIGURACIÓN GOOGLE SHEETS ===
+# === CONFIGURACIÓN DE GOOGLE SHEETS ===
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
 creds = ServiceAccountCredentials.from_json_keyfile_dict(
@@ -32,31 +32,30 @@ tipo_local = st.selectbox("Tipo de local", [
     "Tienda de artículos", "Gasolineras", "Servicios estéticos", "Puesto de lotería", "Otro"
 ])
 
-# === MAPA INTERACTIVO CON MARCADOR DINÁMICO ===
+# === MAPA DINÁMICO ===
 st.markdown("### Seleccione su ubicación en el mapa (haga clic):")
 
-# Configurar mapa base
+# Inicializar el mapa
 m = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-# Leer clic anterior si existe
+# Capturar el clic y dibujar marcador
 map_data = st_folium(m, width=700, height=500, returned_objects=["last_clicked"])
 
 ubicacion_url = None
-
-# Si se ha hecho clic
 if map_data and map_data.get("last_clicked"):
     lat = map_data["last_clicked"]["lat"]
     lon = map_data["last_clicked"]["lng"]
     ubicacion_url = f"https://www.google.com/maps?q={lat},{lon}"
 
-    # Añadir marcador al mapa base
+    # Reinicializar el mapa con el marcador
+    m = folium.Map(location=[lat, lon], zoom_start=16)
     folium.Marker(
         location=[lat, lon],
         tooltip="Ubicación seleccionada",
-        icon=folium.Icon(color="blue", icon="map-marker")
+        icon=folium.Icon(color="red", icon="map-marker")
     ).add_to(m)
 
-    # Volver a mostrar el mapa con el marcador incluido
+    st.markdown("### Vista de la ubicación seleccionada:")
     st_folium(m, width=700, height=500)
 
 # === BOTÓN DE ENVÍO ===
@@ -67,3 +66,4 @@ if st.button("Enviar"):
         datos = [datetime.now().isoformat(), canton, distrito, edad, sexo, escolaridad, tipo_local, ubicacion_url]
         sheet.append_row(datos)
         st.success("¡Gracias! Tu respuesta fue registrada.")
+
