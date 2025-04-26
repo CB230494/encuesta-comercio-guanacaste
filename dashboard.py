@@ -13,6 +13,8 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(
     st.secrets["gcp_service_account"], scope
 )
 
+# === CARGAR DATOS CON CACHE PARA EVITAR RECARGAS POR INTERACCIÓN ===
+@st.cache_data(ttl=300)
 def cargar_datos():
     client = gspread.authorize(creds)
     sheet = client.open("Encuesta_Comercio_2025").worksheet("Respuestas")
