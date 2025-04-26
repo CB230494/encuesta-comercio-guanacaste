@@ -66,9 +66,9 @@ else:
         st.plotly_chart(fig2, use_container_width=True)
 
     # === TIPOS DE DELITOS REPORTADOS ===
-    if "Qué delitos sufrió" in df.columns:
+    if "Tipo de delito" in df.columns:
         st.subheader("Tipos de Delitos Reportados")
-        delitos = df["Qué delitos sufrió"].dropna().str.split(", ")
+        delitos = df["Tipo de delito"].dropna().str.split(", ")
         delitos_flat = [item for sublist in delitos for item in sublist]
         delitos_df = pd.DataFrame(delitos_flat, columns=["Delito"])
         if not delitos_df.empty:
@@ -83,20 +83,20 @@ else:
             st.info("No hay datos suficientes de delitos aún.")
 
     # === VICTIMIZACIÓN ===
-    if "¿Usted o su local comercial han sido víctimas de algún delito en los últimos 12 meses?" in df.columns:
+    if "Victimización" in df.columns:
         st.subheader("Victimización Comercial")
         fig4 = px.pie(
             df,
-            names="¿Usted o su local comercial han sido víctimas de algún delito en los últimos 12 meses?",
+            names="Victimización",
             title="¿Han sido víctimas de delitos?",
             hole=0.5
         )
         st.plotly_chart(fig4, use_container_width=True)
 
     # === MODO DE OPERAR DELICTIVO ===
-    if "¿Cómo operaban los responsables?" in df.columns:
+    if "Modo de operar delictivo" in df.columns:
         st.subheader("Modos de Operar Delictivo Observados")
-        modos = df["¿Cómo operaban los responsables?"].dropna().str.split(", ")
+        modos = df["Modo de operar delictivo"].dropna().str.split(", ")
         modos_flat = [item for sublist in modos for item in sublist]
         modos_df = pd.DataFrame(modos_flat, columns=["Modo"])
         if not modos_df.empty:
@@ -112,9 +112,9 @@ else:
             st.info("No hay datos suficientes sobre modos de operar.")
 
     # === HORARIOS DE DELITOS ===
-    if "¿Conoce el horario en el que ocurrió el hecho delictivo?" in df.columns:
+    if "Horario del hecho" in df.columns:
         st.subheader("Horarios en los que ocurren más delitos")
-        horario_df = df["¿Conoce el horario en el que ocurrió el hecho delictivo?"].dropna()
+        horario_df = df["Horario del hecho"].dropna()
         if not horario_df.empty:
             horario_df = horario_df.value_counts().reset_index()
             horario_df.columns = ["Horario", "Cantidad"]
