@@ -57,22 +57,30 @@ else:
     if "Factores de inseguridad (selección múltiple)" in df.columns:
         st.subheader("Factores de Inseguridad Reportados")
         factores = df["Factores de inseguridad (selección múltiple)"].dropna().str.split(", ")
-        factores_flat = [item for sublist in factores for item in sublist]
+        factores_flat = [item for sublist in factores for item in sublist if item != ""]
         factores_df = pd.DataFrame(factores_flat, columns=["Factor"])
-        fig2 = px.histogram(
-            factores_df,
-            x="Factor",
-            title="Factores de Inseguridad",
-            color_discrete_sequence=["indianred"]
-        )
-        st.plotly_chart(fig2, use_container_width=True)
+
+        if not factores_df.empty:
+            fig2 = px.histogram(
+                factores_df,
+                x="Factor",
+                title="Factores de Inseguridad",
+                color_discrete_sequence=["indianred"]
+            )
+            fig2.update_layout(
+                yaxis=dict(tickmode='linear', dtick=1)
+            )
+            st.plotly_chart(fig2, use_container_width=True)
+        else:
+            st.info("No hay datos suficientes de factores de inseguridad.")
 
     # === TIPOS DE DELITOS REPORTADOS ===
     if "Tipo de delito" in df.columns:
         st.subheader("Tipos de Delitos Reportados")
         delitos = df["Tipo de delito"].dropna().str.split(", ")
-        delitos_flat = [item for sublist in delitos for item in sublist]
+        delitos_flat = [item for sublist in delitos for item in sublist if item != ""]
         delitos_df = pd.DataFrame(delitos_flat, columns=["Delito"])
+
         if not delitos_df.empty:
             fig3 = px.histogram(
                 delitos_df,
@@ -80,9 +88,12 @@ else:
                 title="Frecuencia de Tipos de Delito",
                 color_discrete_sequence=["darkblue"]
             )
+            fig3.update_layout(
+                yaxis=dict(tickmode='linear', dtick=1)
+            )
             st.plotly_chart(fig3, use_container_width=True)
         else:
-            st.info("No hay datos suficientes de delitos aún.")
+            st.info("No hay datos suficientes de delitos reportados.")
 
     # === VICTIMIZACIÓN ===
     if "Victimización" in df.columns:
@@ -99,8 +110,9 @@ else:
     if "Modo de operar delictivo" in df.columns:
         st.subheader("Modos de Operar Delictivo Observados")
         modos = df["Modo de operar delictivo"].dropna().str.split(", ")
-        modos_flat = [item for sublist in modos for item in sublist]
+        modos_flat = [item for sublist in modos for item in sublist if item != ""]
         modos_df = pd.DataFrame(modos_flat, columns=["Modo"])
+
         if not modos_df.empty:
             fig5 = px.bar(
                 modos_df.value_counts().reset_index(),
@@ -108,6 +120,9 @@ else:
                 y="count",
                 labels={"count": "Cantidad"},
                 title="Modos de Operar Delictivo"
+            )
+            fig5.update_layout(
+                yaxis=dict(tickmode='linear', dtick=1)
             )
             st.plotly_chart(fig5, use_container_width=True)
         else:
@@ -117,6 +132,7 @@ else:
     if "Horario del hecho" in df.columns:
         st.subheader("Horarios en los que ocurren más delitos")
         horario_df = df["Horario del hecho"].dropna()
+
         if not horario_df.empty:
             horario_df = horario_df.value_counts().reset_index()
             horario_df.columns = ["Horario", "Cantidad"]
@@ -135,9 +151,12 @@ else:
                 title="Frecuencia de delitos por horario",
                 labels={"Cantidad": "Cantidad de delitos", "Horario": "Rango horario"}
             )
+            fig6.update_layout(
+                yaxis=dict(tickmode='linear', dtick=1)
+            )
             st.plotly_chart(fig6, use_container_width=True)
         else:
-            st.info("No hay datos suficientes sobre horarios.")
+            st.info("No hay datos suficientes sobre horarios de delitos.")
 
     # === MAPA DE UBICACIONES CON COLORES POR DISTRITO ===
     st.subheader("Ubicaciones de Formularios Registrados")
@@ -176,3 +195,4 @@ else:
         st_folium(m, width=800, height=500)
     else:
         st.info("No hay ubicaciones registradas aún en los formularios.")
+
