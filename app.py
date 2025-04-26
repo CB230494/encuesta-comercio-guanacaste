@@ -13,15 +13,23 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(
     st.secrets["gcp_service_account"], scope
 )
 
-client = gspread.authorize(creds)
-sheet = client.open("Encuesta_Comercio_2025").worksheet("Respuestas")
+try:
+    client = gspread.authorize(creds)
+    sheet = client.open("Encuesta_Comercio_2025").worksheet("Respuestas")
+except Exception:
+    st.error("❌ No se pudo acceder a la hoja de cálculo. Verifica nombre, hoja y permisos.")
+    st.stop()
+
+# === ESTADO PARA UBICACIÓN ===
+if "ubicacion" not in st.session_state:
+    st.session_state.ubicacion = None
 
 # === FORMULARIO ===
 st.title("Encuesta Comercio - Guanacaste")
 
 canton = "Santa Cruz"
 distrito = st.selectbox("Distrito", ["Tamarindo", "Cartagena", "Cabo Velas"])
-edad = st.number_input("Edad", min_value=12, max_value=120)
+edad = st.number_input("Edad", min_value=12, max_value=120, format="%d")
 sexo = st.radio("Sexo", ["Hombre", "Mujer", "LGBTQ+", "Otro / Prefiero no decirlo"])
 escolaridad = st.selectbox("Escolaridad", [
     "Ninguna", "Primaria", "Primaria incompleta", "Secundaria incompleta", 
@@ -32,54 +40,68 @@ tipo_local = st.selectbox("Tipo de local", [
     "Tienda de artículos", "Gasolineras", "Servicios estéticos", "Puesto de lotería", "Otro"
 ])
 
-# === MAPA ÚNICO CON PIN DINÁMICO ===
-st.markdown("### Seleccione su ubicación en el mapa (haga clic):")
+# === MAPA DINÁMICO ===
+st.markdown("### Haga clic en el mapa para seleccionar o cambiar su ubicación:")
 
-# Coordenadas base
-center_lat, center_lon = 10.3, -85.8
+mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-# Detectar clic anterior guardado en estado
-if "ubicacion" not in st.session_state:
-    st.session_state.ubicacion = None
-
-# Crear mapa inicial
-m = folium.Map(location=[center_lat, center_lon], zoom_start=13)
-
-# Si ya se ha hecho clic, agregar pin
+# Mostrar pin si ya se ha hecho clic
 if st.session_state.ubicacion:
     folium.Marker(
         location=st.session_state.ubicacion,
         tooltip="Ubicación seleccionada",
         icon=folium.Icon(color="blue", icon="map-marker")
-    ).add_to(m)
-else:
-    # Mostrar mensaje si aún no hay selección
-    st.caption("Haz clic en el mapa para seleccionar la ubicación.")
+    ).add_to(mapa)
 
-# Mostrar mapa y capturar clic
-map_data = st_folium(m, width=700, height=500)
+# Mostrar el mapa e interpretar clic
+map_click = st_folium(mapa, width=700, height=500)
 
-# Actualizar estado con nuevo clic
-if map_data and map_data.get("last_clicked"):
-    lat = map_data["last_clicked"]["lat"]
-    lon = map_data["last_clicked"]["lng"]
+# Si hay nuevo clic, actualizar la ubicación
+if map_click and map_click.get("last_clicked"):
+    lat = map_click["last_clicked"]["lat"]
+    lon = map_click["last_clicked"]["lng"]
     st.session_state.ubicacion = [lat, lon]
-    ubicacion_url = f"https://www.google.com/maps?q={lat},{lon}"
-else:
-    ubicacion_url = None
-    if st.session_state.ubicacion:
-        lat, lon = st.session_state.ubicacion
-        ubicacion_url = f"https://www.google.com/maps?q={lat},{lon}"
 
 # === BOTÓN DE ENVÍO ===
 if st.button("Enviar"):
-    if not ubicacion_url:
-        st.warning("Debes hacer clic en el mapa para seleccionar tu ubicación.")
+    errores = []
+
+    # Verificar cada campo
+    if not edad:
+        errores.append("Edad")
+    if not distrito:
+        errores.append("Distrito")
+    if not sexo:
+        errores.append("Sexo")
+    if not escolaridad:
+        errores.append("Escolaridad")
+    if not tipo_local:
+        errores.append("Tipo de local")
+    if not st.session_state.ubicacion:
+        errores.append("Ubicación en el mapa")
+
+    if errores:
+        st.error("⚠️ Faltan los siguientes campos obligatorios: " + ", ".join(errores))
     else:
-        datos = [datetime.now().isoformat(), canton, distrito, edad, sexo, escolaridad, tipo_local, ubicacion_url]
-        sheet.append_row(datos)
-        st.success("¡Gracias! Tu respuesta fue registrada.")
-        st.session_state.ubicacion = None  # Reiniciar después del envío
+        lat, lon = st.session_state.ubicacion
+        ubicacion_url = f"https://www.google.com/maps?q={lat},{lon}"
 
+        datos = [
+            datetime.now().isoformat(),
+            canton,
+            distrito,
+            edad,
+            sexo,
+            escolaridad,
+            tipo_local,
+            ubicacion_url
+        ]
 
+        try:
+            sheet.append_row(datos)
+            st.success("✅ Respuesta enviada correctamente.")
+            # Reiniciar formulario
+            st.session_state.ubicacion = None
+        except Exception as e:
+            st.error("❌ Error al guardar la respuesta. Intente de nuevo.")
 
