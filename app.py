@@ -33,42 +33,49 @@ if "enviado" not in st.session_state:
 
 st.title("Encuesta Comercio - Guanacaste")
 
-with st.expander("1️⃣ Datos Demográficos", expanded=True):
-    canton = "Santa Cruz"  # Fijo
-    distrito = st.selectbox("Distrito:", ["Tamarindo", "Cartagena", "Cabo Velas"])
-    edad = st.number_input("Edad:", min_value=12, max_value=120, format="%d")
-    sexo = st.radio("Sexo:", ["Hombre", "Mujer", "LGBTQ+", "Otro / Prefiero no decirlo"])
-    escolaridad = st.selectbox("Escolaridad:", [
-        "Ninguna", "Primaria", "Primaria incompleta", "Secundaria incompleta", 
-        "Secundaria completa", "Universitaria incompleta", "Universitaria", "Técnico"
-    ])
-    tipo_local = st.selectbox("Tipo de local comercial:", [
-        "Supermercado", "Pulpería / Licorera", "Restaurante / Soda", "Bar",
-        "Tienda de artículos", "Gasolineras", "Servicios estéticos", "Puesto de lotería", "Otro"
-    ])
+# Verificar si el formulario ya fue enviado
+if st.session_state.enviado:
+    st.success("✅ ¡Formulario enviado exitosamente!")
+    if st.button("Enviar otro formulario"):
+        st.session_state.enviado = False
+        st.experimental_rerun()
+else:
+    with st.expander("1️⃣ Datos Demográficos", expanded=True):
+        canton = "Santa Cruz"  # Fijo
+        distrito = st.selectbox("Distrito:", ["", "Tamarindo", "Cartagena", "Cabo Velas"])
+        edad = st.number_input("Edad:", min_value=12, max_value=120, format="%d")
+        sexo = st.selectbox("Sexo:", ["", "Hombre", "Mujer", "LGBTQ+", "Otro / Prefiero no decirlo"])
+        escolaridad = st.selectbox("Escolaridad:", [
+            "", "Ninguna", "Primaria", "Primaria incompleta", "Secundaria incompleta", 
+            "Secundaria completa", "Universitaria incompleta", "Universitaria", "Técnico"
+        ])
+        tipo_local = st.selectbox("Tipo de local comercial:", [
+            "", "Supermercado", "Pulpería / Licorera", "Restaurante / Soda", "Bar",
+            "Tienda de artículos", "Gasolineras", "Servicios estéticos", "Puesto de lotería", "Otro"
+        ])
 
-    st.markdown("### Seleccione su ubicación en el mapa:")
-    m = folium.Map(location=[10.3, -85.8], zoom_start=13)
+        st.markdown("### Seleccione su ubicación en el mapa:")
+        m = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-    if st.session_state.ubicacion:
-        folium.Marker(
-            location=st.session_state.ubicacion,
-            tooltip="Ubicación seleccionada",
-            icon=folium.Icon(color="blue", icon="map-marker")
-        ).add_to(m)
+        if st.session_state.ubicacion:
+            folium.Marker(
+                location=st.session_state.ubicacion,
+                tooltip="Ubicación seleccionada",
+                icon=folium.Icon(color="blue", icon="map-marker")
+            ).add_to(m)
 
-    map_click = st_folium(m, width=700, height=500)
+        map_click = st_folium(m, width=700, height=500)
 
-    if map_click and map_click.get("last_clicked"):
-        lat = map_click["last_clicked"]["lat"]
-        lon = map_click["last_clicked"]["lng"]
-        st.session_state.ubicacion = [lat, lon]
+        if map_click and map_click.get("last_clicked"):
+            lat = map_click["last_clicked"]["lat"]
+            lon = map_click["last_clicked"]["lng"]
+            st.session_state.ubicacion = [lat, lon]
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD Y FACTORES DE RIESGO ===
 
 with st.expander("2️⃣ Percepción de Seguridad"):
-    percepcion_seguridad = st.radio(
+    percepcion_seguridad = st.selectbox(
         "¿Qué tan seguro(a) se siente en esta zona comercial?",
-        ["Muy seguro(a)", "Seguro(a)", "Ni seguro(a) Ni inseguro(a)", "Inseguro(a)", "Muy inseguro(a)"]
+        ["", "Muy seguro(a)", "Seguro(a)", "Ni seguro(a) Ni inseguro(a)", "Inseguro(a)", "Muy inseguro(a)"]
     )
 
     factores_inseguridad = ""
@@ -172,9 +179,10 @@ with st.expander("4️⃣ Situaciones Relacionadas a Delitos"):
 # === PARTE 5: INFORMACIÓN ADICIONAL ===
 
 with st.expander("5️⃣ Información Adicional"):
-    observacion_control = st.radio(
+    observacion_control = st.selectbox(
         "¿Ha notado la presencia de personas o grupos que aparentan ejercer control sobre la actividad comercial?",
         [
+            "", 
             "Sí, he observado comportamientos similares",
             "He escuchado comentarios de otros comercios",
             "No",
@@ -199,9 +207,10 @@ with st.expander("5️⃣ Información Adicional"):
             ]
         )
 
-    victima = st.radio(
+    victima = st.selectbox(
         "¿Usted o su local comercial han sido víctimas de algún delito en los últimos 12 meses?",
         [
+            "", 
             "Sí, y presenté la denuncia",
             "Sí, pero no presenté la denuncia",
             "No",
@@ -238,6 +247,7 @@ with st.expander("5️⃣ Información Adicional"):
     horario_delito = st.selectbox(
         "¿Conoce el horario en el que ocurrió el hecho delictivo?",
         [
+            "", 
             "00:00 - 02:59 a.m.", "03:00 - 05:59 a.m.", "06:00 - 08:59 a.m.",
             "09:00 - 11:59 a.m.", "12:00 - 14:59 p.m.", "15:00 - 17:59 p.m.",
             "18:00 - 20:59 p.m.", "21:00 - 23:59 p.m.", "Desconocido"
@@ -253,34 +263,34 @@ with st.expander("5️⃣ Información Adicional"):
         ]
     )
 
-    exigencia_cuota = st.radio(
+    exigencia_cuota = st.selectbox(
         "¿Ha recibido su local comercial algún tipo de exigencia económica o cuota obligatoria?",
-        ["Sí", "No", "Prefiero no responder"]
+        ["", "Sí", "No", "Prefiero no responder"]
     )
 
     descripcion_cuota = ""
     if exigencia_cuota == "Sí":
         descripcion_cuota = st.text_area("Detalle cómo ocurrió (frecuencia, forma de contacto, tipo de exigencia):")
 
-    opinion_fp = st.radio(
+    opinion_fp = st.selectbox(
         "¿Cómo califica el servicio policial de la Fuerza Pública cerca de su local?",
-        ["Excelente", "Bueno", "Regular", "Malo", "Muy malo"]
+        ["", "Excelente", "Bueno", "Regular", "Malo", "Muy malo"]
     )
 
-    cambio_servicio = st.radio(
+    cambio_servicio = st.selectbox(
         "¿Cómo ha cambiado el servicio en los últimos 12 meses?",
-        ["Ha mejorado mucho", "Ha mejorado", "Igual", "Ha empeorado", "Ha empeorado mucho"]
+        ["", "Ha mejorado mucho", "Ha mejorado", "Igual", "Ha empeorado", "Ha empeorado mucho"]
     )
 
-    conocimiento_policias = st.radio(
+    conocimiento_policias = st.selectbox(
         "¿Conoce a los policías de Fuerza Pública o Policía Turística que patrullan su zona comercial?",
-        ["Sí", "No"]
+        ["", "Sí", "No"]
     )
 
-    participacion_programa = st.radio(
+    participacion_programa = st.selectbox(
         "¿Conoce o participa en el Programa de Seguridad Comercial de la Fuerza Pública?",
         [
-            "No lo conozco",
+            "", "No lo conozco",
             "Lo conozco, pero no participo",
             "Lo conozco y participo activamente",
             "No lo conozco, pero me gustaría participar",
@@ -299,73 +309,103 @@ with st.expander("5️⃣ Información Adicional"):
     info_adicional = st.text_area("¿Desea agregar alguna otra información que considere pertinente?")
 # === PARTE 6: ENVÍO Y GUARDADO DE RESPUESTAS ===
 
-if st.button("Enviar formulario"):
-    errores = []
+if not st.session_state.enviado:
+    if st.button("Enviar formulario"):
+        errores = []
 
-    # Validar que ubicacion esté seleccionada
-    if not st.session_state.ubicacion:
-        errores.append("Ubicación en el mapa")
+        # Validar que ubicacion esté seleccionada
+        if not st.session_state.ubicacion:
+            errores.append("Ubicación en el mapa")
+        
+        # Validar que campos básicos no estén vacíos
+        if not distrito:
+            errores.append("Distrito")
+        if not sexo:
+            errores.append("Sexo")
+        if not escolaridad:
+            errores.append("Escolaridad")
+        if not tipo_local:
+            errores.append("Tipo de local comercial")
+        if not percepcion_seguridad:
+            errores.append("Percepción de seguridad")
+        if not victima:
+            errores.append("Victimización")
+        if not horario_delito:
+            errores.append("Horario del hecho")
+        if not exigencia_cuota:
+            errores.append("Exigencia de cuota")
+        if not opinion_fp:
+            errores.append("Opinión sobre Fuerza Pública")
+        if not cambio_servicio:
+            errores.append("Cambio de servicio")
+        if not conocimiento_policias:
+            errores.append("Conocimiento de policías")
+        if not participacion_programa:
+            errores.append("Participación en programa comercial")
 
-    # Verificar si hay errores
-    if errores:
-        st.error("⚠️ Faltan los siguientes campos obligatorios: " + ", ".join(errores))
-    else:
-        lat, lon = st.session_state.ubicacion
-        ubicacion_url = f"https://www.google.com/maps?q={lat},{lon}"
+        # Verificar si hay errores
+        if errores:
+            st.error("⚠️ Faltan los siguientes campos obligatorios: " + ", ".join(errores))
+        else:
+            lat, lon = st.session_state.ubicacion
+            ubicacion_url = f"https://www.google.com/maps?q={lat},{lon}"
 
-        # Armar fila para guardar
-        datos = [
-            datetime.now().isoformat(),  # Timestamp
-            canton,
-            distrito,
-            edad,
-            sexo,
-            escolaridad,
-            tipo_local,
-            ubicacion_url,
-            percepcion_seguridad,
-            ", ".join(factores_inseguridad) if factores_inseguridad else "",
-            ", ".join(factores_sociales) if factores_sociales else "",
-            ", ".join(inversion_social) if inversion_social else "",
-            ", ".join(consumo_drogas) if consumo_drogas else "",
-            ", ".join(bunkers) if bunkers else "",
-            ", ".join(delitos_zona) if delitos_zona else "",
-            ", ".join(venta_drogas) if venta_drogas else "",
-            ", ".join(delitos_vida) if delitos_vida else "",
-            ", ".join(delitos_sexuales) if delitos_sexuales else "",
-            ", ".join(asaltos) if asaltos else "",
-            ", ".join(estafas) if estafas else "",
-            ", ".join(robos) if robos else "",
-            observacion_control,
-            ", ".join(descripcion_control) if descripcion_control else "",
-            victima,
-            ", ".join(motivo_no_denuncia) if motivo_no_denuncia else "",
-            ", ".join(tipo_delito) if tipo_delito else "",
-            horario_delito,
-            ", ".join(modo_operar) if modo_operar else "",
-            exigencia_cuota,
-            descripcion_cuota,
-            opinion_fp,
-            cambio_servicio,
-            conocimiento_policias,
-            participacion_programa,
-            deseo_participar,
-            medidas_fp,
-            medidas_muni,
-            info_adicional
-        ]
+            # Armar fila para guardar
+            datos = [
+                datetime.now().isoformat(),  # Timestamp
+                "Santa Cruz",
+                distrito,
+                edad,
+                sexo,
+                escolaridad,
+                tipo_local,
+                ubicacion_url,
+                percepcion_seguridad,
+                ", ".join(factores_inseguridad) if factores_inseguridad else "",
+                ", ".join(factores_sociales) if factores_sociales else "",
+                ", ".join(inversion_social) if inversion_social else "",
+                ", ".join(consumo_drogas) if consumo_drogas else "",
+                ", ".join(bunkers) if bunkers else "",
+                ", ".join(delitos_zona) if delitos_zona else "",
+                ", ".join(venta_drogas) if venta_drogas else "",
+                ", ".join(delitos_vida) if delitos_vida else "",
+                ", ".join(delitos_sexuales) if delitos_sexuales else "",
+                ", ".join(asaltos) if asaltos else "",
+                ", ".join(estafas) if estafas else "",
+                ", ".join(robos) if robos else "",
+                observacion_control,
+                ", ".join(descripcion_control) if descripcion_control else "",
+                victima,
+                ", ".join(motivo_no_denuncia) if motivo_no_denuncia else "",
+                ", ".join(tipo_delito) if tipo_delito else "",
+                horario_delito,
+                ", ".join(modo_operar) if modo_operar else "",
+                exigencia_cuota,
+                descripcion_cuota,
+                opinion_fp,
+                cambio_servicio,
+                conocimiento_policias,
+                participacion_programa,
+                deseo_participar,
+                medidas_fp,
+                medidas_muni,
+                info_adicional
+            ]
 
-        # Guardar en Google Sheets
-        sheet = conectar_google_sheets()
-        if sheet:
-            try:
-                sheet.append_row(datos)
-                st.success("✅ ¡Formulario enviado correctamente!")
-                # Resetear el formulario
-                st.session_state.ubicacion = None
-                st.session_state.enviado = True
-                st.experimental_rerun()
-                st.stop()
-            except Exception:
-                st.error("❌ Error al guardar la respuesta. Intente de nuevo.")
+            # Guardar en Google Sheets
+            sheet = conectar_google_sheets()
+            if sheet:
+                try:
+                    sheet.append_row(datos)
+                    st.session_state.enviado = True
+                    st.success("✅ ¡Formulario enviado correctamente!")
+                    st.experimental_rerun()
+                except Exception:
+                    st.error("❌ Error al guardar la respuesta. Intente de nuevo.")
+else:
+    st.success("✅ ¡Formulario enviado correctamente!")
+    if st.button("Enviar otro formulario"):
+        st.session_state.enviado = False
+        st.experimental_rerun()
+
 
