@@ -7,6 +7,7 @@ import folium
 from streamlit_folium import st_folium
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import time
 
 # === CONFIGURACIÓN DE GOOGLE SHEETS ===
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
@@ -309,101 +310,97 @@ with st.expander("5️⃣ Información Adicional"):
     info_adicional = st.text_area("¿Desea agregar alguna otra información que considere pertinente?")
 # === PARTE 6: ENVÍO Y GUARDADO DE RESPUESTAS ===
 
-if not st.session_state.enviado:
-    if st.button("Enviar formulario"):
-        errores = []
+import time  # Asegúrate de tener importado esto
 
-        # Validar que ubicacion esté seleccionada
-        if not st.session_state.ubicacion:
-            errores.append("Ubicación en el mapa")
-        
-        # Validar que campos básicos no estén vacíos
-        if not distrito:
-            errores.append("Distrito")
-        if not sexo:
-            errores.append("Sexo")
-        if not escolaridad:
-            errores.append("Escolaridad")
-        if not tipo_local:
-            errores.append("Tipo de local comercial")
-        if not percepcion_seguridad:
-            errores.append("Percepción de seguridad")
-        if not victima:
-            errores.append("Victimización")
-        if not horario_delito:
-            errores.append("Horario del hecho")
-        if not exigencia_cuota:
-            errores.append("Exigencia de cuota")
-        if not opinion_fp:
-            errores.append("Opinión sobre Fuerza Pública")
-        if not cambio_servicio:
-            errores.append("Cambio de servicio")
-        if not conocimiento_policias:
-            errores.append("Conocimiento de policías")
-        if not participacion_programa:
-            errores.append("Participación en programa comercial")
+if st.button("Enviar formulario"):
+    errores = []
 
-        # Verificar si hay errores
-        if errores:
-            st.error("⚠️ Faltan los siguientes campos obligatorios: " + ", ".join(errores))
-        else:
-            lat, lon = st.session_state.ubicacion
-            ubicacion_url = f"https://www.google.com/maps?q={lat},{lon}"
+    # Validar que ubicacion esté seleccionada
+    if not st.session_state.ubicacion:
+        errores.append("Ubicación en el mapa")
+    
+    # Validar campos básicos
+    if not distrito:
+        errores.append("Distrito")
+    if not sexo:
+        errores.append("Sexo")
+    if not escolaridad:
+        errores.append("Escolaridad")
+    if not tipo_local:
+        errores.append("Tipo de local comercial")
+    if not percepcion_seguridad:
+        errores.append("Percepción de seguridad")
+    if not victima:
+        errores.append("Victimización")
+    if not horario_delito:
+        errores.append("Horario del hecho")
+    if not exigencia_cuota:
+        errores.append("Exigencia de cuota")
+    if not opinion_fp:
+        errores.append("Opinión sobre Fuerza Pública")
+    if not cambio_servicio:
+        errores.append("Cambio de servicio")
+    if not conocimiento_policias:
+        errores.append("Conocimiento de policías")
+    if not participacion_programa:
+        errores.append("Participación en programa comercial")
 
-            # Armar fila para guardar
-            datos = [
-                datetime.now().isoformat(),  # Timestamp
-                "Santa Cruz",
-                distrito,
-                edad,
-                sexo,
-                escolaridad,
-                tipo_local,
-                ubicacion_url,
-                percepcion_seguridad,
-                ", ".join(factores_inseguridad) if factores_inseguridad else "",
-                ", ".join(factores_sociales) if factores_sociales else "",
-                ", ".join(inversion_social) if inversion_social else "",
-                ", ".join(consumo_drogas) if consumo_drogas else "",
-                ", ".join(bunkers) if bunkers else "",
-                ", ".join(delitos_zona) if delitos_zona else "",
-                ", ".join(venta_drogas) if venta_drogas else "",
-                ", ".join(delitos_vida) if delitos_vida else "",
-                ", ".join(delitos_sexuales) if delitos_sexuales else "",
-                ", ".join(asaltos) if asaltos else "",
-                ", ".join(estafas) if estafas else "",
-                ", ".join(robos) if robos else "",
-                observacion_control,
-                ", ".join(descripcion_control) if descripcion_control else "",
-                victima,
-                ", ".join(motivo_no_denuncia) if motivo_no_denuncia else "",
-                ", ".join(tipo_delito) if tipo_delito else "",
-                horario_delito,
-                ", ".join(modo_operar) if modo_operar else "",
-                exigencia_cuota,
-                descripcion_cuota,
-                opinion_fp,
-                cambio_servicio,
-                conocimiento_policias,
-                participacion_programa,
-                deseo_participar,
-                medidas_fp,
-                medidas_muni,
-                info_adicional
-            ]
+    # Verificar si hay errores
+    if errores:
+        st.error("⚠️ Faltan los siguientes campos obligatorios: " + ", ".join(errores))
+    else:
+        lat, lon = st.session_state.ubicacion
+        ubicacion_url = f"https://www.google.com/maps?q={lat},{lon}"
 
-            # Guardar en Google Sheets
-            sheet = conectar_google_sheets()
-            if sheet:
-                try:
-                    sheet.append_row(datos)
-                    st.session_state.enviado = True
-                    st.success("✅ ¡Formulario enviado correctamente!")
-                    st.stop()
-                except Exception:
-                    st.error("❌ Error al guardar la respuesta. Intente de nuevo.")
-else:
-    st.success("✅ ¡Formulario enviado correctamente!")
-    if st.button("Enviar otro formulario"):
-        st.session_state.enviado = False
-        st.experimental_rerun()
+        # Armar fila para guardar
+        datos = [
+            datetime.now().isoformat(),
+            "Santa Cruz",
+            distrito,
+            edad,
+            sexo,
+            escolaridad,
+            tipo_local,
+            ubicacion_url,
+            percepcion_seguridad,
+            ", ".join(factores_inseguridad) if factores_inseguridad else "",
+            ", ".join(factores_sociales) if factores_sociales else "",
+            ", ".join(inversion_social) if inversion_social else "",
+            ", ".join(consumo_drogas) if consumo_drogas else "",
+            ", ".join(bunkers) if bunkers else "",
+            ", ".join(delitos_zona) if delitos_zona else "",
+            ", ".join(venta_drogas) if venta_drogas else "",
+            ", ".join(delitos_vida) if delitos_vida else "",
+            ", ".join(delitos_sexuales) if delitos_sexuales else "",
+            ", ".join(asaltos) if asaltos else "",
+            ", ".join(estafas) if estafas else "",
+            ", ".join(robos) if robos else "",
+            observacion_control,
+            ", ".join(descripcion_control) if descripcion_control else "",
+            victima,
+            ", ".join(motivo_no_denuncia) if motivo_no_denuncia else "",
+            ", ".join(tipo_delito) if tipo_delito else "",
+            horario_delito,
+            ", ".join(modo_operar) if modo_operar else "",
+            exigencia_cuota,
+            descripcion_cuota,
+            opinion_fp,
+            cambio_servicio,
+            conocimiento_policias,
+            participacion_programa,
+            deseo_participar,
+            medidas_fp,
+            medidas_muni,
+            info_adicional
+        ]
+
+        # Guardar en Google Sheets
+        sheet = conectar_google_sheets()
+        if sheet:
+            try:
+                sheet.append_row(datos)
+                st.success("✅ ¡Formulario enviado correctamente!")
+                time.sleep(2)  # Esperar 2 segundos
+                st.experimental_rerun()
+            except Exception:
+                st.error("❌ Error al guardar la respuesta. Intente de nuevo.")
