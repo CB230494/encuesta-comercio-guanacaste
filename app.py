@@ -102,10 +102,10 @@ if st.button("Enviar"):
                 sheet.append_row(datos)
                 st.success("✅ Respuesta enviada correctamente.")
 
-                # Limpiar todo para nuevo formulario
+                # Limpiar y detener ejecución
                 st.session_state.ubicacion = None
                 st.session_state.enviado = True
-                st.experimental_rerun()
+                st.stop()
 
             except Exception:
                 st.error("❌ Error al guardar la respuesta. Intente de nuevo.")
