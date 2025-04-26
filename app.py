@@ -397,9 +397,9 @@ if not st.session_state.enviado:
             if sheet:
                 try:
                     sheet.append_row(datos)
-                    st.session_state.enviado = True
-                    st.success("✅ ¡Formulario enviado correctamente!")
-                    st.experimental_rerun()
+                 st.session_state.enviado = True
+                 st.success("✅ ¡Formulario enviado correctamente!")
+                 st.stop()
                 except Exception:
                     st.error("❌ Error al guardar la respuesta. Intente de nuevo.")
 else:
