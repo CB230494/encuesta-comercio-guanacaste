@@ -9,7 +9,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 # === CONFIGURACIÓN DE GOOGLE SHEETS ===
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
-# USAR st.secrets para acceder a las credenciales desde Streamlit Cloud
+# Leer credenciales desde st.secrets (Streamlit Cloud)
 creds = ServiceAccountCredentials.from_json_keyfile_dict(
     st.secrets["gcp_service_account"], scope
 )
@@ -34,25 +34,23 @@ tipo_local = st.selectbox("Tipo de local", [
 ])
 
 # === MAPA INTERACTIVO ===
-st.markdown("### Seleccione su ubicación en el mapa:")
+st.markdown("### Seleccione su ubicación en el mapa (haga clic):")
+
 m = folium.Map(location=[10.3, -85.8], zoom_start=11)
-marker = folium.Marker(location=[10.3, -85.8], draggable=True)
-marker.add_to(m)
 map_data = st_folium(m, width=700, height=500)
 
-# Obtener coordenadas y generar enlace
-if map_data and map_data.get('last_clicked'):
-    lat = map_data['last_clicked']['lat']
-    lon = map_data['last_clicked']['lng']
+if map_data and map_data.get("last_clicked"):
+    lat = map_data["last_clicked"]["lat"]
+    lon = map_data["last_clicked"]["lng"]
     ubicacion_url = f"https://www.google.com/maps?q={lat},{lon}"
 else:
     ubicacion_url = None
 
-# === ENVIAR ===
+# === BOTÓN DE ENVÍO ===
 if st.button("Enviar"):
     if not ubicacion_url:
-        st.warning("Debes marcar una ubicación en el mapa.")
+        st.warning("Debes hacer clic en el mapa para seleccionar tu ubicación.")
     else:
         datos = [datetime.now().isoformat(), canton, distrito, edad, sexo, escolaridad, tipo_local, ubicacion_url]
         sheet.append_row(datos)
-        st.success("¡Gracias! Tu respuesta fue registrada.")
+        st.success("¡Gracias! Tu respuesta fue registrada con éxito.")
