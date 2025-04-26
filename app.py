@@ -1,3 +1,26 @@
+# === MOSTRAR LOGO DESEMBREMOS SEGURIDAD ===
+
+from PIL import Image
+
+st.set_page_config(page_title="Encuesta Comercio Guanacaste", layout="wide")
+
+logo = Image.open("Captura de pantalla 2025-04-26 133200.png")  # Cambia aquí el nombre real del logo
+
+st.image(logo, use_column_width=False, width=300)
+st.markdown(
+    "<h1 style='text-align: center; color: #002B7F;'>Encuesta de Percepción de Seguridad</h1>", 
+    unsafe_allow_html=True
+)
+st.markdown(
+    "<h4 style='text-align: center; color: #8B0000;'>Zona Turística - Guanacaste</h4>",
+    unsafe_allow_html=True
+)
+
+
+
+
+
+
 # === PARTE 1: IMPORTACIONES Y CONFIGURACIÓN GOOGLE SHEETS ===
 
 import streamlit as st
