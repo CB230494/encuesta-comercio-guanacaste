@@ -9,46 +9,24 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import time
 
-# === CONFIGURACIÓN DE GOOGLE SHEETS ===
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_dict(
-    st.secrets["gcp_service_account"], scope
-)
-
-def conectar_google_sheets():
-    try:
-        client = gspread.authorize(creds)
-        return client.open("Encuesta_Comercio_2025").worksheet("Respuestas")
-    except Exception:
-        st.error("❌ No se pudo acceder a la hoja de cálculo. Verifica nombre, hoja y permisos.")
-        return None
-
-# === INICIALIZAR VARIABLES DE SESIÓN ===
-if "ubicacion" not in st.session_state:
-    st.session_state.ubicacion = None
-if "enviado" not in st.session_state:
-    st.session_state.enviado = False
-
-
-# === CSS Personalizado fondo blanco, títulos azules, subtítulos rojos ===
+# CSS personalizado
 st.markdown(
     """
     <style>
-    /* Fondo general blanco */
+    /* Fondo general */
     .stApp {
-        background-color: #ffffff;
-        color: black; /* Letras normales en negro */
+        background-color: #0e1117;
     }
 
     /* Títulos principales */
     h1, h2, h3 {
-        color: #003366; /* Azul oscuro */
+        color: #3399ff;
     }
 
-    /* Estilo de encabezados de expanders */
+    /* Estilo de Expander Headers */
     .streamlit-expanderHeader {
         font-weight: bold;
-        background-color: #003366; /* Azul oscuro */
+        background-color: #003366;
         color: white;
         border-radius: 10px;
         padding: 10px;
@@ -56,25 +34,25 @@ st.markdown(
         font-size: 20px;
     }
 
-    /* Fondo interno de los expanders */
+    /* Fondo interno de expanders */
     div[data-testid="stExpander"] > div {
-        background-color: #f9f9f9; /* Gris muy claro */
-        border: 2px solid #cc0000; /* Borde rojo fuerte */
+        background-color: #1f2228;
+        border: 2px solid #ff4b4b;
         border-radius: 12px;
         padding: 10px;
     }
 
-    /* Inputs (radio, select, multiselect, textarea) */
+    /* Inputs personalizados (radios, selects, multiselects) */
     .stSelectbox > div, .stRadio > div, .stMultiSelect > div, .stTextArea > div {
-        background-color: #ffffff;
-        color: black;
+        background-color: #1f2228;
         border-radius: 10px;
+        color: white;
         padding: 10px;
     }
 
-    /* Botones personalizados */
+    /* Botones */
     .stButton > button {
-        background-color: #cc0000; /* Rojo fuerte */
+        background-color: #ff4b4b;
         color: white;
         border: none;
         border-radius: 10px;
@@ -82,41 +60,26 @@ st.markdown(
         font-size: 16px;
     }
     .stButton > button:hover {
-        background-color: #990000; /* Rojo más oscuro al pasar el mouse */
+        background-color: #e60000;
         color: white;
-    }
-
-    /* Subtítulos manuales en rojo (cuando quieras usar) */
-    .subtitulo-rojo {
-        color: #cc0000;
-        font-size: 18px;
-        font-weight: bold;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# === Mostrar logo centrado ===
+# Mostrar logo local
+st.image("logo.jpeg", width=180)
+
 st.markdown(
     """
     <div style="text-align: center; margin-bottom: 10px;">
-        <img src="logo.jpeg" width="180">
+        <!-- Aquí después pones tu st.image('ruta_logo.png') -->
+        <h1 style="color: #3399ff;">Encuesta Comercio 2025 🦜🌴</h1>
     </div>
     """,
     unsafe_allow_html=True
-)
-
-# === Título Principal ===
-st.markdown(
-    """
-    <div style="text-align: center; margin-bottom: 10px;">
-        <h1>Encuesta Comercio 2025 🦜🌴</h1>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
+) 
 
 
 
