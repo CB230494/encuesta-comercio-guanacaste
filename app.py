@@ -99,7 +99,6 @@ if st.session_state.enviado:
         st.session_state.enviado = False
         st.experimental_rerun()
 else:
-   else:
     with st.expander("1️⃣🦜 Datos Demográficos", expanded=True):
         canton = "Santa Cruz"
 
@@ -137,7 +136,7 @@ else:
             ]
         )
 
-       
+        st.caption("Nota: Todas las anteriores son selección única.")
 
 
        # === PARTE DEL MAPA EN "DATOS DEMOGRÁFICOS" ===
