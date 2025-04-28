@@ -30,43 +30,47 @@ if "enviado" not in st.session_state:
     st.session_state.enviado = False
 # === PERSONALIZACIÓN CON FONDO NEGRO ===
 
-# Personalización de Estilo
+# === PERSONALIZACIÓN ESTILO TURÍSTICO FONDO OSCURO ===
+
+# CSS personalizado
 st.markdown(
     """
     <style>
-    /* Fondo general oscuro */
+    /* Fondo general */
     .stApp {
-        background-color: #0e1117; /* Negro suave tipo dark mode */
+        background-color: #0e1117;
     }
 
     /* Títulos principales */
     h1, h2, h3 {
-        color: #3399ff; /* Azul claro para destacar sobre negro */
+        color: #3399ff;
     }
 
-    /* Personalización de encabezado del expander */
+    /* Estilo de Expander Headers */
     .streamlit-expanderHeader {
         font-weight: bold;
-        background-color: #003366; /* Azul oscuro en encabezado de expanders */
+        background-color: #003366;
         color: white;
         border-radius: 10px;
         padding: 10px;
         margin-bottom: 5px;
+        font-size: 20px;
     }
 
-    /* Fondo interno del expander cuando se abre */
+    /* Fondo interno de expanders */
     div[data-testid="stExpander"] > div {
-        background-color: #1c1f26; /* Gris oscuro interno */
-        border: 2px solid #ff4b4b; /* Bordes rojos */
-        border-radius: 10px;
+        background-color: #1f2228;
+        border: 2px solid #ff4b4b;
+        border-radius: 12px;
         padding: 10px;
     }
 
-    /* Inputs personalizados */
+    /* Inputs personalizados (radios, selects, multiselects) */
     .stSelectbox > div, .stRadio > div, .stMultiSelect > div, .stTextArea > div {
-        background-color: #262730;
-        color: white;
+        background-color: #1f2228;
         border-radius: 10px;
+        color: white;
+        padding: 10px;
     }
 
     /* Botones */
@@ -87,15 +91,17 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Espacio para logo o título personalizado
+# === Espacio para LOGO (centrado arriba) ===
 st.markdown(
     """
     <div style="text-align: center; margin-bottom: 10px;">
-        <h1 style="color: #3399ff;">Encuesta Comercio 2025</h1>
+        <!-- Aquí después pones tu st.image('ruta_logo.png') -->
+        <h1 style="color: #3399ff;">Encuesta Comercio 2025 🦜🌴</h1>
     </div>
     """,
     unsafe_allow_html=True
 )
+
 
 
 # === TEXTO INICIAL ===
@@ -114,7 +120,7 @@ if st.session_state.enviado:
         st.session_state.enviado = False
         st.experimental_rerun()
 else:
-    with st.expander("1️⃣ Datos Demográficos", expanded=True):
+    with st.expander("1️⃣🦜 Datos Demográficos", expanded=True):
         canton = "Santa Cruz"
         distrito = st.selectbox("Distrito:", ["", "Tamarindo", "Cartagena", "Cabo Velas (Flamingo)"])
         edad = st.number_input("Edad:", min_value=12, max_value=120, format="%d")
@@ -157,7 +163,7 @@ if map_click and map_click.get("last_clicked"):
     st.session_state.ubicacion = [lat, lon]
 
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD ===
-with st.expander("2️⃣ Percepción de Seguridad"):
+with st.expander("2️⃣🐒 Percepción de Seguridad"):
     percepcion_seguridad = st.radio(
         "¿Qué tan seguro(a) se siente en esta zona comercial?",
         ["Muy seguro(a)", "Seguro(a)", "Ni seguro(a) Ni inseguro(a)", "Inseguro(a)", "Muy inseguro(a)"]
@@ -183,7 +189,7 @@ with st.expander("2️⃣ Percepción de Seguridad"):
 
 
 # === PARTE 4: FACTORES DE RIESGO SOCIAL ===
-with st.expander("3️⃣ Factores de Riesgo Social"):
+with st.expander("3️⃣🐢 Factores de Riesgo Social"):
     factores_sociales = st.multiselect(
         "¿Cuáles de los siguientes factores afectan la seguridad en su zona comercial?",
         [
@@ -203,7 +209,7 @@ with st.expander("3️⃣ Factores de Riesgo Social"):
     )
     st.caption("Nota: selección múltiple.")
 # === PARTE 5: SITUACIONES RELACIONADAS A DELITOS ===
-with st.expander("4️⃣ Situaciones Relacionadas a Delitos"):
+with st.expander("4️⃣🦥 Situaciones Relacionadas a Delitos"):
     delitos_zona = st.multiselect(
         "¿Qué delitos considera que ocurren alrededor de su comercio?",
         [
@@ -281,7 +287,7 @@ with st.expander("4️⃣ Situaciones Relacionadas a Delitos"):
 # === PARTE 6: INFORMACIÓN ADICIONAL ===
 # === PARTE 6: INFORMACIÓN ADICIONAL ===
 # === PARTE 6: INFORMACIÓN ADICIONAL ===
-with st.expander("5️⃣ Información Adicional"):
+with st.expander("5️⃣🦎 Información Adicional"):
     st.markdown("""
     **Información adicional**
 
