@@ -9,7 +9,13 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import time
 
-# CSS personalizado
+# === INICIALIZAR VARIABLES DE SESIÓN ===
+if "ubicacion" not in st.session_state:
+    st.session_state.ubicacion = None
+if "enviado" not in st.session_state:
+    st.session_state.enviado = False
+
+# === CSS personalizado ===
 st.markdown(
     """
     <style>
@@ -23,7 +29,7 @@ st.markdown(
         color: #3399ff;
     }
 
-    /* Estilo de Expander Headers */
+    /* Estilo de encabezados de expanders */
     .streamlit-expanderHeader {
         font-weight: bold;
         background-color: #003366;
@@ -42,7 +48,7 @@ st.markdown(
         padding: 10px;
     }
 
-    /* Inputs personalizados (radios, selects, multiselects) */
+    /* Inputs personalizados */
     .stSelectbox > div, .stRadio > div, .stMultiSelect > div, .stTextArea > div {
         background-color: #1f2228;
         border-radius: 10px;
@@ -68,22 +74,17 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Mostrar logo local
-
-
+# === Mostrar logo centrado ===
 st.markdown(
     """
     <div style="text-align: center; margin-bottom: 10px;">
-        <!-- Aquí después pones tu st.image('ruta_logo.png') -->
         <h1 style="color: #3399ff;">Encuesta Comercio 2025 🦜🌴</h1>
     </div>
     """,
     unsafe_allow_html=True
-) 
+)
 
-
-
-# === TEXTO INICIAL ===
+# === TÍTULO PRINCIPAL ===
 st.title("Encuesta Comercio - Santa Cruz")
 
 st.markdown("""
@@ -137,6 +138,7 @@ else:
         )
 
         st.caption("Nota: Todas las anteriores son selección única.")
+
 
 
        # === PARTE DEL MAPA EN "DATOS DEMOGRÁFICOS" ===
