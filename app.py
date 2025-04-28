@@ -198,6 +198,7 @@ with st.expander("4️⃣ Situaciones Relacionadas a Delitos"):
     )
     st.caption("Nota: selección múltiple.")
 # === PARTE 6: INFORMACIÓN ADICIONAL ===
+# === PARTE 6: INFORMACIÓN ADICIONAL ===
 with st.expander("5️⃣ Información Adicional"):
     observacion_control = st.radio(
         "¿Ha notado la presencia de personas o grupos que aparentan ejercer control sobre la actividad comercial?",
@@ -266,26 +267,29 @@ with st.expander("5️⃣ Información Adicional"):
         )
         st.caption("Nota: puede marcar más de una opción.")
 
-    horario_delito = st.selectbox(
-        "¿Conoce el horario en el que ocurrió el hecho delictivo?",
-        [
-            "", 
-            "00:00 - 02:59 a.m.", "03:00 - 05:59 a.m.", "06:00 - 08:59 a.m.",
-            "09:00 - 11:59 a.m.", "12:00 - 14:59 p.m.", "15:00 - 17:59 p.m.",
-            "18:00 - 20:59 p.m.", "21:00 - 23:59 p.m.", "Desconocido"
-        ]
-    )
+    # SOLO mostrar si fue víctima (no mostrar si dijo No o Prefiere no responder)
+    if victima in ["Sí, y presenté la denuncia", "Sí, pero no presenté la denuncia"]:
+        horario_delito = st.selectbox(
+            "¿Conoce el horario en el que ocurrió el hecho delictivo?",
+            [
+                "", 
+                "00:00 - 02:59 a.m.", "03:00 - 05:59 a.m.", "06:00 - 08:59 a.m.",
+                "09:00 - 11:59 a.m.", "12:00 - 14:59 p.m.", "15:00 - 17:59 p.m.",
+                "18:00 - 20:59 p.m.", "21:00 - 23:59 p.m.", "Desconocido"
+            ]
+        )
 
-    modo_operar = st.multiselect(
-        "¿Cómo operaban los responsables?",
-        [
-            "Arma blanca", "Arma de fuego", "Amenazas",
-            "Cobros o 'cuotas' por dejar operar", "Arrebato",
-            "Boquete", "Ganzúa", "Engaño", "No sé", "Otro"
-        ]
-    )
-    st.caption("Nota: selección múltiple.")
+        modo_operar = st.multiselect(
+            "¿Cómo operaban los responsables?",
+            [
+                "Arma blanca", "Arma de fuego", "Amenazas",
+                "Cobros o 'cuotas' por dejar operar", "Arrebato",
+                "Boquete", "Ganzúa", "Engaño", "No sé", "Otro"
+            ]
+        )
+        st.caption("Nota: selección múltiple.")
 
+    # Continua normalmente
     exigencia_cuota = st.radio(
         "¿Ha recibido su local comercial algún tipo de exigencia económica o cuota obligatoria?",
         ["Sí", "No", "Prefiero no responder"]
@@ -342,6 +346,7 @@ with st.expander("5️⃣ Información Adicional"):
     info_adicional = st.text_area(
         "¿Desea agregar alguna otra información que considere pertinente?"
     )
+
 # === PARTE 7: ENVÍO Y GUARDADO DE RESPUESTAS ===
 if not st.session_state.enviado:
     if st.button("Enviar formulario"):
