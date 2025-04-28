@@ -74,7 +74,7 @@ st.markdown(
 st.markdown(
     """
     <div style="text-align: center; margin-bottom: 10px;">
-        st.image("logo.jpeg", width=180)
+        
         <h1 style="color: #3399ff;">Encuesta Comercio 2025 🦜🌴</h1>
     </div>
     """,
