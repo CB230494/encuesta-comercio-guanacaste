@@ -74,7 +74,7 @@ st.markdown(
 st.markdown(
     """
     <div style="text-align: center; margin-bottom: 10px;">
-        
+        <!-- Aquí después pones tu st.image('ruta_logo.png') -->
         <h1 style="color: #3399ff;">Encuesta Comercio 2025 🦜🌴</h1>
     </div>
     """,
