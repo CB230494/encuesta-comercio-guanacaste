@@ -28,36 +28,26 @@ if "ubicacion" not in st.session_state:
     st.session_state.ubicacion = None
 if "enviado" not in st.session_state:
     st.session_state.enviado = False
-# === PERSONALIZACIÓN DEL FORMULARIO ===
+# === PERSONALIZACIÓN CON FONDO NEGRO ===
 
-# Logo (después aquí cargas tu logo real con st.image)
-st.markdown(
-    """
-    <div style="text-align: center; margin-bottom: 10px;">
-        <h1 style="color: #003366;">Encuesta Comercio 2025</h1>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
-# Personalización con CSS
+# Personalización de Estilo
 st.markdown(
     """
     <style>
-    /* Fondo general */
+    /* Fondo general oscuro */
     .stApp {
-        background-color: #f8f9fa;
+        background-color: #0e1117; /* Negro suave tipo dark mode */
     }
 
     /* Títulos principales */
     h1, h2, h3 {
-        color: #003366; /* Azul oscuro */
+        color: #3399ff; /* Azul claro para destacar sobre negro */
     }
 
-    /* Personalización de los expander */
+    /* Personalización de encabezado del expander */
     .streamlit-expanderHeader {
         font-weight: bold;
-        background-color: #003366;
+        background-color: #003366; /* Azul oscuro en encabezado de expanders */
         color: white;
         border-radius: 10px;
         padding: 10px;
@@ -66,15 +56,16 @@ st.markdown(
 
     /* Fondo interno del expander cuando se abre */
     div[data-testid="stExpander"] > div {
-        background-color: #ffffff;
-        border: 2px solid #ff4b4b; /* Rojo */
+        background-color: #1c1f26; /* Gris oscuro interno */
+        border: 2px solid #ff4b4b; /* Bordes rojos */
         border-radius: 10px;
         padding: 10px;
     }
 
-    /* Inputs */
+    /* Inputs personalizados */
     .stSelectbox > div, .stRadio > div, .stMultiSelect > div, .stTextArea > div {
-        background-color: #ffffff;
+        background-color: #262730;
+        color: white;
         border-radius: 10px;
     }
 
@@ -95,6 +86,17 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+# Espacio para logo o título personalizado
+st.markdown(
+    """
+    <div style="text-align: center; margin-bottom: 10px;">
+        <h1 style="color: #3399ff;">Encuesta Comercio 2025</h1>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 
 # === TEXTO INICIAL ===
 st.title("Encuesta Comercio - Guanacaste")
