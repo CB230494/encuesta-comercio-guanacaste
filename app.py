@@ -199,7 +199,14 @@ with st.expander("4️⃣ Situaciones Relacionadas a Delitos"):
     st.caption("Nota: selección múltiple.")
 # === PARTE 6: INFORMACIÓN ADICIONAL ===
 # === PARTE 6: INFORMACIÓN ADICIONAL ===
+# === PARTE 6: INFORMACIÓN ADICIONAL ===
 with st.expander("5️⃣ Información Adicional"):
+    st.markdown("""
+    **Información adicional**
+
+    Este apartado busca conocer con mayor profundidad la percepción de seguridad en el entorno comercial, identificar situaciones particulares que generan preocupación entre los comerciantes y entender mejor los factores que afectan el desarrollo de su actividad. La información recolectada permitirá orientar acciones preventivas, fortalecer la presencia institucional y fomentar entornos comerciales más seguros y colaborativos.
+    """)
+
     observacion_control = st.radio(
         "¿Ha notado la presencia de personas o grupos que aparentan ejercer control sobre la actividad comercial?",
         [
@@ -240,6 +247,8 @@ with st.expander("5️⃣ Información Adicional"):
 
     motivo_no_denuncia = []
     tipo_delito = []
+    horario_delito = ""
+    modo_operar = []
 
     if victima == "Sí, pero no presenté la denuncia":
         motivo_no_denuncia = st.multiselect(
@@ -267,7 +276,7 @@ with st.expander("5️⃣ Información Adicional"):
         )
         st.caption("Nota: puede marcar más de una opción.")
 
-    # SOLO mostrar si fue víctima (no mostrar si dijo No o Prefiere no responder)
+    # SOLO si fue víctima mostrar horario y modo de operar
     if victima in ["Sí, y presenté la denuncia", "Sí, pero no presenté la denuncia"]:
         horario_delito = st.selectbox(
             "¿Conoce el horario en el que ocurrió el hecho delictivo?",
@@ -289,7 +298,7 @@ with st.expander("5️⃣ Información Adicional"):
         )
         st.caption("Nota: selección múltiple.")
 
-    # Continua normalmente
+    # Continua normal para todos
     exigencia_cuota = st.radio(
         "¿Ha recibido su local comercial algún tipo de exigencia económica o cuota obligatoria?",
         ["Sí", "No", "Prefiero no responder"]
@@ -346,6 +355,7 @@ with st.expander("5️⃣ Información Adicional"):
     info_adicional = st.text_area(
         "¿Desea agregar alguna otra información que considere pertinente?"
     )
+
 
 # === PARTE 7: ENVÍO Y GUARDADO DE RESPUESTAS ===
 if not st.session_state.enviado:
