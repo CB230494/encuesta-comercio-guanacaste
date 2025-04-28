@@ -92,7 +92,7 @@ st.markdown(
 )
 
 # Mostrar logo local
-st.image("logo.png", width=180)
+st.image("logo.jpeg", width=180)
 
 st.markdown(
     """
