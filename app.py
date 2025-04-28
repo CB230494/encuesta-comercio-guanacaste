@@ -28,6 +28,73 @@ if "ubicacion" not in st.session_state:
     st.session_state.ubicacion = None
 if "enviado" not in st.session_state:
     st.session_state.enviado = False
+# === PERSONALIZACIÓN DEL FORMULARIO ===
+
+# Logo (después aquí cargas tu logo real con st.image)
+st.markdown(
+    """
+    <div style="text-align: center; margin-bottom: 10px;">
+        <h1 style="color: #003366;">Encuesta Comercio 2025</h1>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# Personalización con CSS
+st.markdown(
+    """
+    <style>
+    /* Fondo general */
+    .stApp {
+        background-color: #f8f9fa;
+    }
+
+    /* Títulos principales */
+    h1, h2, h3 {
+        color: #003366; /* Azul oscuro */
+    }
+
+    /* Personalización de los expander */
+    .streamlit-expanderHeader {
+        font-weight: bold;
+        background-color: #003366;
+        color: white;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 5px;
+    }
+
+    /* Fondo interno del expander cuando se abre */
+    div[data-testid="stExpander"] > div {
+        background-color: #ffffff;
+        border: 2px solid #ff4b4b; /* Rojo */
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    /* Inputs */
+    .stSelectbox > div, .stRadio > div, .stMultiSelect > div, .stTextArea > div {
+        background-color: #ffffff;
+        border-radius: 10px;
+    }
+
+    /* Botones */
+    .stButton > button {
+        background-color: #ff4b4b;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 24px;
+        font-size: 16px;
+    }
+    .stButton > button:hover {
+        background-color: #e60000;
+        color: white;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # === TEXTO INICIAL ===
 st.title("Encuesta Comercio - Guanacaste")
