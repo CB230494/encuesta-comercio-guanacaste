@@ -91,7 +91,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# === Espacio para LOGO (centrado arriba) ===
+# Mostrar logo local
+st.image("logo.png", width=180)
+
 st.markdown(
     """
     <div style="text-align: center; margin-bottom: 10px;">
