@@ -99,7 +99,7 @@ st.markdown(
 
 
 # === TEXTO INICIAL ===
-st.title("Encuesta Comercio - Guanacaste")
+st.title("Encuesta Comercio - Santa Cruz")
 
 st.markdown("""
 **Con el objetivo de fortalecer la seguridad en nuestro entorno comercial, nos enfocamos en abordar las principales preocupaciones de seguridad.**
