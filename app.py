@@ -28,28 +28,27 @@ if "ubicacion" not in st.session_state:
     st.session_state.ubicacion = None
 if "enviado" not in st.session_state:
     st.session_state.enviado = False
-# === PERSONALIZACIÓN CON FONDO NEGRO ===
 
-# === PERSONALIZACIÓN ESTILO TURÍSTICO FONDO OSCURO ===
 
-# CSS personalizado
+# === CSS Personalizado fondo blanco, títulos azules, subtítulos rojos ===
 st.markdown(
     """
     <style>
-    /* Fondo general */
+    /* Fondo general blanco */
     .stApp {
-        background-color: #0e1117;
+        background-color: #ffffff;
+        color: black; /* Letras normales en negro */
     }
 
     /* Títulos principales */
     h1, h2, h3 {
-        color: #3399ff;
+        color: #003366; /* Azul oscuro */
     }
 
-    /* Estilo de Expander Headers */
+    /* Estilo de encabezados de expanders */
     .streamlit-expanderHeader {
         font-weight: bold;
-        background-color: #003366;
+        background-color: #003366; /* Azul oscuro */
         color: white;
         border-radius: 10px;
         padding: 10px;
@@ -57,25 +56,25 @@ st.markdown(
         font-size: 20px;
     }
 
-    /* Fondo interno de expanders */
+    /* Fondo interno de los expanders */
     div[data-testid="stExpander"] > div {
-        background-color: #1f2228;
-        border: 2px solid #ff4b4b;
+        background-color: #f9f9f9; /* Gris muy claro */
+        border: 2px solid #cc0000; /* Borde rojo fuerte */
         border-radius: 12px;
         padding: 10px;
     }
 
-    /* Inputs personalizados (radios, selects, multiselects) */
+    /* Inputs (radio, select, multiselect, textarea) */
     .stSelectbox > div, .stRadio > div, .stMultiSelect > div, .stTextArea > div {
-        background-color: #1f2228;
+        background-color: #ffffff;
+        color: black;
         border-radius: 10px;
-        color: white;
         padding: 10px;
     }
 
-    /* Botones */
+    /* Botones personalizados */
     .stButton > button {
-        background-color: #ff4b4b;
+        background-color: #cc0000; /* Rojo fuerte */
         color: white;
         border: none;
         border-radius: 10px;
@@ -83,26 +82,41 @@ st.markdown(
         font-size: 16px;
     }
     .stButton > button:hover {
-        background-color: #e60000;
+        background-color: #990000; /* Rojo más oscuro al pasar el mouse */
         color: white;
+    }
+
+    /* Subtítulos manuales en rojo (cuando quieras usar) */
+    .subtitulo-rojo {
+        color: #cc0000;
+        font-size: 18px;
+        font-weight: bold;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Mostrar logo local
-st.image("logo.jpeg", width=180)
-
+# === Mostrar logo centrado ===
 st.markdown(
     """
     <div style="text-align: center; margin-bottom: 10px;">
-        <!-- Aquí después pones tu st.image('ruta_logo.png') -->
-        <h1 style="color: #3399ff;">Encuesta Comercio 2025 🦜🌴</h1>
+        <img src="logo.jpeg" width="180">
     </div>
     """,
     unsafe_allow_html=True
 )
+
+# === Título Principal ===
+st.markdown(
+    """
+    <div style="text-align: center; margin-bottom: 10px;">
+        <h1>Encuesta Comercio 2025 🦜🌴</h1>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 
 
 
