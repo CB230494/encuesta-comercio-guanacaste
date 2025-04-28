@@ -103,15 +103,30 @@ else:
         canton = "Santa Cruz"
         distrito = st.selectbox("Distrito:", ["", "Tamarindo", "Cartagena", "Cabo Velas (Flamingo)"])
         edad = st.number_input("Edad:", min_value=12, max_value=120, format="%d")
-        sexo = st.radio("Sexo:", ["Hombre", "Mujer", "LGBTQ+", "Otro / Prefiero No decirlo"])
-        escolaridad = st.radio("Escolaridad:", [
-            "Ninguna", "Primaria", "Primaria incompleta", "Secundaria incompleta",
-            "Secundaria completa", "Universitaria incompleta", "Universitaria", "Técnico"
-        ])
-        tipo_local = st.radio("Tipo de local comercial:", [
-            "Supermercado", "Pulpería / Licorera", "Restaurante / Soda", "Bar", 
-            "Tienda de artículos", "Gasolineras", "Servicios estéticos", "Puesto de lotería", "Otro"
-        ])
+# === Código corregido para seleccionar una opción única desplegable ===
+
+sexo = st.selectbox(
+    "Sexo:",
+    ["Hombre", "Mujer", "LGBTQ+", "Otro / Prefiero No decirlo"]
+)
+
+escolaridad = st.selectbox(
+    "Escolaridad:",
+    [
+        "Ninguna", "Primaria", "Primaria incompleta", "Secundaria incompleta",
+        "Secundaria completa", "Universitaria incompleta", "Universitaria", "Técnico"
+    ]
+)
+
+tipo_local = st.selectbox(
+    "Tipo de local comercial:",
+    [
+        "Supermercado", "Pulpería / Licorera", "Restaurante / Soda", "Bar",
+        "Tienda de artículos", "Gasolineras", "Servicios estéticos",
+        "Puesto de lotería", "Otro"
+    ]
+)
+
         st.caption("Nota: Todas las anteriores son selección única.")
 
        # === PARTE DEL MAPA EN "DATOS DEMOGRÁFICOS" ===
@@ -263,9 +278,7 @@ with st.expander("4️⃣🦥 Situaciones Relacionadas a Delitos"):
         ]
     )
     st.caption("Nota: selección múltiple.")
-# === PARTE 6: INFORMACIÓN ADICIONAL ===
-# === PARTE 6: INFORMACIÓN ADICIONAL ===
-# === PARTE 6: INFORMACIÓN ADICIONAL ===
+
 with st.expander("5️⃣🦎 Información Adicional"):
     st.markdown("""
     **Información adicional**
