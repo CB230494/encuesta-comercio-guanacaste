@@ -538,7 +538,7 @@ if not st.session_state.enviado:
                     st.success("✅ ¡Formulario enviado correctamente!")
                     st.experimental_rerun()
                 except Exception:
-                    st.error("❌ Error al guardar la respuesta. Intente de nuevo.")
+                    
 else:
     st.success("✅ ¡Formulario enviado correctamente!")
     if st.button("Enviar otro formulario"):
