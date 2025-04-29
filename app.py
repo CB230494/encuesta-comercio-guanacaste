@@ -9,6 +9,18 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import time
 
+# === Función para conectar a Google Sheets ===
+def conectar_google_sheets():
+    try:
+        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+        credentials_dict = st.secrets["gcp_service_account"]
+        credentials = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict, scope)
+        client = gspread.authorize(credentials)
+        sheet = client.open("Encuesta_Comercio_2025").sheet1  # ← Asegúrate que el nombre sea correcto
+        return sheet
+    except Exception:
+        return None
+
 # === INICIALIZAR VARIABLES DE SESIÓN ===
 if "ubicacion" not in st.session_state:
     st.session_state.ubicacion = None
@@ -139,34 +151,26 @@ else:
 
         st.caption("Nota: Todas las anteriores son selección única.")
 
+    # === MAPA ===
+    st.markdown("### Seleccione su ubicación en el mapa:")
 
+    if "mapa" not in st.session_state:
+        st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-       # === PARTE DEL MAPA EN "DATOS DEMOGRÁFICOS" ===
+    if st.session_state.ubicacion:
+        st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
+        folium.Marker(
+            location=st.session_state.ubicacion,
+            tooltip="Ubicación seleccionada",
+            icon=folium.Icon(color="blue", icon="map-marker")
+        ).add_to(st.session_state.mapa)
 
-st.markdown("### Seleccione su ubicación en el mapa:")
+    map_click = st_folium(st.session_state.mapa, width=700, height=500)
 
-# Crear el mapa base solo una vez al cargar
-if "mapa" not in st.session_state:
-    st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
-
-# Si ya hay ubicación seleccionada, agregar el marcador
-if st.session_state.ubicacion:
-    # Limpiar y recrear el mapa para evitar múltiples marcadores
-    st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
-    folium.Marker(
-        location=st.session_state.ubicacion,
-        tooltip="Ubicación seleccionada",
-        icon=folium.Icon(color="blue", icon="map-marker")
-    ).add_to(st.session_state.mapa)
-
-# Mostrar el mapa (sin recargar toda la página)
-map_click = st_folium(st.session_state.mapa, width=700, height=500)
-
-# Si el usuario hace clic en el mapa, capturar nueva ubicación
-if map_click and map_click.get("last_clicked"):
-    lat = map_click["last_clicked"]["lat"]
-    lon = map_click["last_clicked"]["lng"]
-    st.session_state.ubicacion = [lat, lon]
+    if map_click and map_click.get("last_clicked"):
+        lat = map_click["last_clicked"]["lat"]
+        lon = map_click["last_clicked"]["lng"]
+        st.session_state.ubicacion = [lat, lon]
 
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD ===
 with st.expander("2️⃣🐒 Percepción de Seguridad"):
@@ -529,17 +533,17 @@ if not st.session_state.enviado:
                 info_adicional
             ]
 
-# ==== Guardar en Google Sheets ====
-sheet = conectar_google_sheets()
+ # ==== Guardar en Google Sheets ====
+            sheet = conectar_google_sheets()
 
-if sheet:
-    try:
-        sheet.append_row(datos)
-        st.session_state.enviado = True
-        st.success("✅ ¡Formulario enviado correctamente!")
-        st.experimental_rerun()
-    except Exception as e:
-        st.error(f"❌ Error al enviar el formulario: {e}")
+            if sheet:
+                try:
+                    sheet.append_row(datos)
+                    st.session_state.enviado = True
+                    st.success("✅ ¡Formulario enviado correctamente!")
+                    st.experimental_rerun()
+                except Exception:
+                    pass  # No mostrar errores al usuario
 
 
                     
