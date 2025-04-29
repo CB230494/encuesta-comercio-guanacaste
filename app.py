@@ -538,8 +538,9 @@ if sheet:
         st.session_state.enviado = True
         st.success("✅ ¡Formulario enviado correctamente!")
         st.experimental_rerun()
-    except Exception:
-        pass  # Se ignora el error silenciosamente
+    except Exception as e:
+        st.error(f"❌ Error al enviar el formulario: {e}")
+
 
                     
 else:
