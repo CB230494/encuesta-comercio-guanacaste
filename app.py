@@ -529,15 +529,18 @@ if not st.session_state.enviado:
                 info_adicional
             ]
 
-            # Guardar en Google Sheets
-            sheet = conectar_google_sheets()
-            if sheet:
-                try:
-                    sheet.append_row(datos)
-                    st.session_state.enviado = True
-                    st.success("✅ ¡Formulario enviado correctamente!")
-                    st.experimental_rerun()
-                except Exception:
+# ==== Guardar en Google Sheets ====
+sheet = conectar_google_sheets()
+
+if sheet:
+    try:
+        sheet.append_row(datos)
+        st.session_state.enviado = True
+        st.success("✅ ¡Formulario enviado correctamente!")
+        st.experimental_rerun()
+    except Exception:
+        pass  # Se ignora el error silenciosamente
+
                     
 else:
     st.success("✅ ¡Formulario enviado correctamente!")
