@@ -211,23 +211,23 @@ with st.expander("", expanded=True):
         # === MAPA ===
         st.markdown("### Seleccione su ubicación en el mapa:")
 
-    if "mapa" not in st.session_state:
-        st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
+        if "mapa" not in st.session_state:
+            st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-    if st.session_state.ubicacion:
-        st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
-        folium.Marker(
-            location=st.session_state.ubicacion,
-            tooltip="Ubicación seleccionada",
-            icon=folium.Icon(color="blue", icon="map-marker")
-        ).add_to(st.session_state.mapa)
+        if st.session_state.ubicacion:
+            st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
+            folium.Marker(
+                location=st.session_state.ubicacion,
+                tooltip="Ubicación seleccionada",
+                icon=folium.Icon(color="blue", icon="map-marker")
+            ).add_to(st.session_state.mapa)
 
-    map_click = st_folium(st.session_state.mapa, width=700, height=500)
+        map_click = st_folium(st.session_state.mapa, width=700, height=500)
 
-    if map_click and map_click.get("last_clicked"):
-        lat = map_click["last_clicked"]["lat"]
-        lon = map_click["last_clicked"]["lng"]
-        st.session_state.ubicacion = [lat, lon]
+        if map_click and map_click.get("last_clicked"):
+            lat = map_click["last_clicked"]["lat"]
+            lon = map_click["last_clicked"]["lng"]
+            st.session_state.ubicacion = [lat, lon]
 
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD ===
 with st.expander("2️⃣🐒 Percepción de Seguridad"):
