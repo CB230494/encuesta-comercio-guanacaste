@@ -625,7 +625,7 @@ if not st.session_state.enviado:
 else:
     st.markdown("""
     <div style='background-color:#9DC453; padding: 20px; border-radius: 10px; border: 2px solid #51924B; text-align: center;'>
-        <h2 style='color: #2C517A;'>✅ ¡Gracias por completar la encuesta!</h2>
+        <h2 style='color: #2C517A;'>✅ MONITOS</h2>
         <p style='color: ##2C517A;'>Tus respuestas han sido registradas exitosamente.</p>
     </div>
     """, unsafe_allow_html=True)
