@@ -45,15 +45,15 @@ st.markdown("""
 
     /* Encabezado del expander */
    .expander-title {
-    background-color: #347A59;
-    color: #ffffff;
-    font-size: 30px;
-    font-weight: bold;
-    border-radius: 15px;
-    padding: 15px 20px;
-    margin-bottom: -20px;
-    text-align: left;
-}
+        background-color: #347A59;
+        color: #ffffff;
+        font-size: 30px;
+        font-weight: bold;
+        border-radius: 15px;
+        padding: 15px 20px;
+        margin-bottom: -20px;
+        text-align: left;
+    }
 
     /* Elimina el triángulo predeterminado del expander */
     summary::marker {
