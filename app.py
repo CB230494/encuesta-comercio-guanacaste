@@ -45,13 +45,17 @@ st.markdown("""
 
      /* Estilo personalizado para encabezados de expanders */
      div[role="button"].streamlit-expanderHeader {
-        background-color: #51924B !important;
-        color: #ffffff !important;
-        font-size: 45px !important;
-        font-weight: bold !important;
-        border-radius: 10px;
-        padding: 12px;
-    }
+    background-color: #347A59 !important;   /* Verde oscuro institucional */
+    color: #FFF8DC !important;              /* Dorado claro (legible) */
+    font-size: 30px !important;             /* Tamaño más visible */
+    font-weight: 900 !important;            /* Negrita fuerte */
+    font-family: 'Segoe UI', sans-serif;    /* Fuente moderna y clara */
+    border-radius: 20px;                    /* Bordes suaves */
+    padding: 16px 24px;
+    text-transform: none;                   /* Mantiene mayúsculas/minúsculas originales */
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);  /* Sombra sutil para resaltar */
+}
+
 
     /* Fondo interno de expanders */
     div[data-testid="stExpander"] > div {
