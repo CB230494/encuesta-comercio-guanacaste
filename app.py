@@ -33,7 +33,7 @@ st.markdown("""
     /* Forzar modo claro y fondo general */
     html, body, .stApp {
         color-scheme: light !important;
-        background-color: #DF912F !important;
+        background-color: #2C517A !important;
         color: #FAFEF3 !important;
     }
 
