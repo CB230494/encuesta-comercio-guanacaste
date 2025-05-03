@@ -160,7 +160,7 @@ if st.session_state.enviado:
     st.success("✅ ¡Formulario enviado exitosamente!")
 
 else:
-    st.markdown("<div class='expander-title'>1️⃣🦜 Datos Demográficos</div>", unsafe_allow_html=True)
+    st.markdown("<div class='expander-title'>Datos Demográficos</div>", unsafe_allow_html=True)
 with st.expander("", expanded=True):
         canton = "Santa Cruz"
 
