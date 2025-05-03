@@ -208,8 +208,8 @@ with st.expander("", expanded=True):
 
         st.caption("Nota: Todas las anteriores son selección única.")
 
-    # === MAPA ===
-    st.markdown("### Seleccione su ubicación en el mapa:")
+        # === MAPA ===
+        st.markdown("### Seleccione su ubicación en el mapa:")
 
     if "mapa" not in st.session_state:
         st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
