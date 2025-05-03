@@ -34,7 +34,7 @@ st.markdown("""
     html, body, .stApp {
         color-scheme: light !important;
         background-color: #2C517A !important;
-        color: #DF912F !important;
+        color: #FAFEF3 !important;
     }
 
     /* Títulos principales */
