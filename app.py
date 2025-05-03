@@ -612,15 +612,15 @@ if not st.session_state.enviado:
             ]
 
  # ==== Guardar en Google Sheets ====
-           sheet = conectar_google_sheets()
+sheet = conectar_google_sheets()
 
 if sheet:
     try:
         sheet.append_row(datos)
         st.session_state.enviado = True
         st.success("✅ ¡Formulario enviado correctamente!")
-    except gspread.exceptions.APIError:
-        st.error("❌ Error al conectar con Google Sheets.")
+    except Exception:
+        st.error("❌ Hubo un error al guardar los datos. Intente nuevamente.")
 else:
     st.error("❌ No se pudo establecer conexión con Google Sheets.")
 
