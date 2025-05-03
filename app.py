@@ -44,22 +44,22 @@ st.markdown("""
     }
 
     /* Encabezado del expander */
-div[data-testid="stExpander"] > summary {
-    background-color: #ffffff !important;
-    color: #FFF8DC !important;
-    font-size: 28px !important;
-    font-weight: 900 !important;
-    font-family: 'Segoe UI', sans-serif !important;
-    border-radius: 16px !important;
-    padding: 12px 20px !important;
-    margin-bottom: 8px;
-    list-style: none;
-}
+    div[data-testid="stExpander"] > summary {
+        background-color: #ffffff !important;
+        color: #FFF8DC !important;
+        font-size: 28px !important;
+        font-weight: 900 !important;
+        font-family: 'Segoe UI', sans-serif !important;
+        border-radius: 16px !important;
+        padding: 12px 20px !important;
+        margin-bottom: 8px;
+        list-style: none;
+    }
 
-/* Elimina el triángulo predeterminado del expander */
-summary::marker {
-    display: none;
-}
+    /* Elimina el triángulo predeterminado del expander */
+    summary::marker {
+        display: none;
+    }
 
 
 
