@@ -291,7 +291,7 @@ with st.expander("3️⃣🐢 Factores de Riesgo Social"):
         "Búnker(Sitio de oportunidad)",
         [
             "Casa de habitación",
-            "Edificació Abandonada","Lote Baldío","Otro"
+            "Edificación Abandonada","Lote Baldío","Otro"
         ]
     )
     st.caption("Nota: selección múltiple.")
