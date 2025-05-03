@@ -46,10 +46,10 @@ st.markdown("""
      /* Estilo personalizado para encabezados de expanders */
      div[role="button"].streamlit-expanderHeader {
         background-color: #51924B !important;
-        color: #FFFFFF !important;
+        color: #9DC453 !important;
         font-size: 45px !important;
         font-weight: bold !important;
-        border-radius: 500px;
+        border-radius: 10px;
         padding: 12px;
     }
 
