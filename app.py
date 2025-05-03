@@ -35,6 +35,7 @@ st.markdown("""
         color-scheme: light !important;
         background-color: #2C517A !important;
         color: #FAFEF3 !important;
+        font-weight: bold !important;
     }
 
     /* Títulos principales */
