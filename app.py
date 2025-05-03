@@ -44,17 +44,16 @@ st.markdown("""
     }
 
     /* Encabezado del expander */
-    div[data-testid="stExpander"] > summary {
-        background-color: #ffffff !important;
-        color: #FFF8DC !important;
-        font-size: 28px !important;
-        font-weight: 900 !important;
-        font-family: 'Segoe UI', sans-serif !important;
-        border-radius: 16px !important;
-        padding: 12px 20px !important;
-        margin-bottom: 8px;
-        list-style: none;
-    }
+   .expander-title {
+    background-color: #347A59;
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin-bottom: -20px;
+    text-align: left;
+}
 
     /* Elimina el triángulo predeterminado del expander */
     summary::marker {
@@ -161,7 +160,8 @@ if st.session_state.enviado:
     st.success("✅ ¡Formulario enviado exitosamente!")
 
 else:
-    with st.expander("1️⃣🦜 Datos Demográficos", expanded=True):
+    st.markdown("<div class='expander-title'>1️⃣🦜 Datos Demográficos</div>", unsafe_allow_html=True)
+with st.expander("", expanded=True):
         canton = "Santa Cruz"
 
         distrito = st.selectbox(
