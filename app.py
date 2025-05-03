@@ -230,7 +230,8 @@ with st.expander("", expanded=True):
             st.session_state.ubicacion = [lat, lon]
 
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD ===
-with st.expander("2️⃣🐒 Percepción de Seguridad"):
+st.markdown("<div class='expander-title'>Percepción de Seguridad</div>", unsafe_allow_html=True)
+with st.expander("", expanded=True):
     percepcion_seguridad = st.radio(
         "¿Qué tan seguro(a) se siente en esta zona comercial?",
         ["Muy seguro(a)", "Seguro(a)", "Ni seguro(a) Ni inseguro(a)", "Inseguro(a)", "Muy inseguro(a)"]
