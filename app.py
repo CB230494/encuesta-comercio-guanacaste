@@ -257,7 +257,8 @@ with st.expander("", expanded=True):
 
 
 # === PARTE 4: FACTORES DE RIESGO SOCIAL ===
-with st.expander("3️⃣🐢 Factores de Riesgo Social"):
+st.markdown("<div class='expander-title'>Factores de Riesgo Social</div>", unsafe_allow_html=True)
+with st.expander("", expanded=True):
     factores_sociales = st.multiselect(
         "¿Cuáles de los siguientes factores afectan la seguridad en su zona comercial?",
         [
@@ -307,7 +308,8 @@ with st.expander("3️⃣🐢 Factores de Riesgo Social"):
     st.caption("Nota: selección múltiple.")
     
 # === PARTE 5: SITUACIONES RELACIONADAS A DELITOS ===
-with st.expander("4️⃣🦥 Situaciones Relacionadas a Delitos"):
+st.markdown("<div class='expander-title'>Situaciones Relacionadas a Delitos</div>", unsafe_allow_html=True)
+with st.expander("", expanded=True):
     delitos_zona = st.multiselect(
         "¿Seleccine los delitos que considere que ocurren alrededor de su comercio?",
         [
@@ -383,7 +385,8 @@ with st.expander("4️⃣🦥 Situaciones Relacionadas a Delitos"):
     )
     st.caption("Nota: selección múltiple.")
 
-with st.expander("5️⃣🦎 Información Adicional"):
+st.markdown("<div class='expander-title'>Información Adicional</div>", unsafe_allow_html=True)
+with st.expander("", expanded=True):
     st.markdown("""
     **Información adicional**
 
