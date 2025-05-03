@@ -43,18 +43,24 @@ st.markdown("""
         color: #FAFEF3;
     }
 
-     /* Estilo personalizado para encabezados de expanders */
-     div[role="button"].streamlit-expanderHeader {
+    /* Encabezado del expander */
+div[data-testid="stExpander"] > summary {
     background-color: #347A59 !important;
     color: #FFF8DC !important;
-    font-size: 30px !important;
+    font-size: 28px !important;
     font-weight: 900 !important;
-    font-family: 'Segoe UI', sans-serif;
-    border-radius: 20px;
-    padding: 16px 24px;
-    text-transform: none;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    font-family: 'Segoe UI', sans-serif !important;
+    border-radius: 16px !important;
+    padding: 12px 20px !important;
+    margin-bottom: 8px;
+    list-style: none;
 }
+
+/* Elimina el triángulo predeterminado del expander */
+summary::marker {
+    display: none;
+}
+
 
 
     /* Fondo interno de expanders */
