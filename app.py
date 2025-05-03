@@ -148,9 +148,7 @@ La información que nos suministras es completamente confidencial y se emplea ex
 
 if st.session_state.enviado:
     st.success("✅ ¡Formulario enviado exitosamente!")
-    if st.button("Enviar otro formulario"):
-        st.session_state.enviado = False
-        st.experimental_rerun()
+
 else:
     with st.expander("1️⃣🦜 Datos Demográficos", expanded=True):
         canton = "Santa Cruz"
@@ -626,7 +624,7 @@ else:
     st.markdown("""
     <div style='background-color:#9DC453; padding: 20px; border-radius: 10px; border: 2px solid #51924B; text-align: center;'>
         <h2 style='color: #2C517A;'>✅ ¡Gracias por completar la encuesta!</h2>
-        <p style='color: ##2C517A;'>TEST.</p>
+        <p style='color: #2C517A;'>Tus respuestas han sido registradas exitosamente.</p>
     </div>
     """, unsafe_allow_html=True)
 
