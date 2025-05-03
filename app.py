@@ -28,33 +28,33 @@ if "enviado" not in st.session_state:
     st.session_state.enviado = False
 
 # === CSS personalizado ===
-st.markdown(
-    """
+st.markdown("""
     <style>
-    /* Fondo general */
-    .stApp {
-        background-color: #0e1117;
+    /* Forzar modo claro y fondo general */
+    html, body, .stApp {
+        color-scheme: light !important;
+        background-color: #2C517A !important;
+        color: #FAFEF3 !important;
     }
 
     /* Títulos principales */
     h1, h2, h3 {
-        color: #3399ff;
+        color: #FAFEF3;
     }
 
-    /* Estilo de encabezados de expanders */
-    .streamlit-expanderHeader {
-        font-weight: bold;
-        background-color: #003366;
-        color: white;
-        border-radius: 10px;
-        padding: 10px;
-        margin-bottom: 5px;
-        font-size: 20px;
+     /* Estilo personalizado para encabezados de expanders */
+     div[role="button"].streamlit-expanderHeader {
+        background-color: #51924B !important;
+        color: #FAFEF3 !important;
+        font-size: 24px !important;
+        font-weight: bold !important;
+        border-radius: 8px;
+        padding: 12px;
     }
 
     /* Fondo interno de expanders */
     div[data-testid="stExpander"] > div {
-        background-color: #1f2228;
+        background-color: #ffffff;
         border: 2px solid #ff4b4b;
         border-radius: 12px;
         padding: 10px;
@@ -62,42 +62,82 @@ st.markdown(
 
     /* Inputs personalizados */
     .stSelectbox > div, .stRadio > div, .stMultiSelect > div, .stTextArea > div {
-        background-color: #1f2228;
+        background-color: #51924b;
+        border: 2px solid #51924b;
         border-radius: 10px;
-        color: white;
+        color: #2C517A !important;
         padding: 10px;
     }
 
     /* Botones */
     .stButton > button {
-        background-color: #ff4b4b;
-        color: white;
+        background-color: #DF912F;
+        color: #ffffff;
         border: none;
         border-radius: 10px;
         padding: 10px 24px;
         font-size: 16px;
     }
+
     .stButton > button:hover {
-        background-color: #e60000;
+        background-color: #DF912F;
         color: white;
+    }
+    
+   /* Corregir fondo y texto seleccionado en RADIO y MULTISELECT */
+div[role="radiogroup"] > label[data-selected="true"],
+div[role="radiogroup"] > div[data-selected="true"],
+div[role="listbox"] > div[data-selected="true"] {
+    color: #ffffff !important;
+    border-radius: 8px !important;
+    font-weight: bold !important;
+}
+div[role="radiogroup"] label[data-selected="true"]::after,
+div[role="listbox"] div[data-selected="true"]::after {
+    content: " ✅";
+    margin-left: 6px;
+}
+    /* desplegables */
+div[role="radiogroup"] label,
+div[role="radiogroup"] label span {
+    color: #ffffff !important;
+    font-weight: 500 !important;
+}
+    /* Cambia el color del texto de las preguntas */
+label, .stMarkdown p {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+    </style>
+""", unsafe_allow_html=True)
+
+from PIL import Image
+import streamlit as st
+
+banner = Image.open("baner.png")
+st.markdown(
+    """
+    <style>
+    .banner-container img {
+        width: 100%;
+        max-height: 300px;
+        object-fit: contain;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# === Mostrar logo centrado ===
-st.markdown(
-    """
-    <div style="text-align: center; margin-bottom: 10px;">
-        <h1 style="color: #3399ff;">Encuesta Comercio 2025 🦜🌴</h1>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+st.markdown('<div class="banner-container">', unsafe_allow_html=True)
+st.image(banner, use_container_width=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
 
 # === TÍTULO PRINCIPAL ===
-st.title("Encuesta Comercio - Santa Cruz")
 
 st.markdown("""
 **Con el objetivo de fortalecer la seguridad en nuestro entorno comercial, nos enfocamos en abordar las principales preocupaciones de seguridad.**
@@ -117,9 +157,17 @@ else:
 
         distrito = st.selectbox(
             "Distrito:",
-            ["", "Tamarindo", "Cartagena", "Cabo Velas (Flamingo)"]
+            ["", "Tamarindo", "Cabo Velas (Flamingo)", "Tempate"]
         )
 
+# Subopciones por distrito    
+        if distrito == "Tamarindo":
+            barrio = st.selectbox("Barrio",["Tamarindo Centro","Villareal"])
+        elif distrito == "Cabo Velas (Flamingo)":
+            barrio = st.selectbox("Barrio",["Flamingo", "Brasilito"])
+        elif distrito == "Tempate":
+            barrio = st.selectbox("Barrio",["Surf Side", "Potrero"])
+        
         edad = st.number_input(
             "Edad:",
             min_value=12,
@@ -218,10 +266,40 @@ with st.expander("3️⃣🐢 Factores de Riesgo Social"):
         ]
     )
     st.caption("Nota: selección múltiple.")
+
+    falta_de_inversion = st.multiselect(
+        "Falta de Inversión Social",
+        [
+            "Falta de oferta educativa",
+            "Falta de oferta deportiva",
+            "Falta de oferta recreativa",
+            "Falta de actividades culturales"
+        ]
+    )
+    st.caption("Nota: selección múltiple.")
+
+    consumo_drogas = st.multiselect(
+        "Consumo de Drogas",
+        [
+            "Área Privada",
+            "Área Pública"
+        ]
+    )
+    st.caption("Nota: selección múltiple.")
+
+    bunker = st.multiselect(
+        "Búnker(Sitio de oportunidad)",
+        [
+            "Casa de habitación",
+            "Edificació Abandonada","Lote Baldío","Otro"
+        ]
+    )
+    st.caption("Nota: selección múltiple.")
+    
 # === PARTE 5: SITUACIONES RELACIONADAS A DELITOS ===
 with st.expander("4️⃣🦥 Situaciones Relacionadas a Delitos"):
     delitos_zona = st.multiselect(
-        "¿Qué delitos considera que ocurren alrededor de su comercio?",
+        "¿Seleccine los delitos que considere que ocurren alrededor de su comercio?",
         [
             "Disturbios en vía pública",
             "Daños a la propiedad",
@@ -244,7 +322,7 @@ with st.expander("4️⃣🦥 Situaciones Relacionadas a Delitos"):
     )
 
     delitos_vida = st.multiselect(
-        "¿Qué delitos contra la vida ha observado?",
+        "Que delitos contra la vida considera que hay en la zona",
         [
             "Homicidios",
             "Heridos"
@@ -252,7 +330,7 @@ with st.expander("4️⃣🦥 Situaciones Relacionadas a Delitos"):
     )
 
     delitos_sexuales = st.multiselect(
-        "¿Qué delitos sexuales ha percibido?",
+        "¿Qué delitos sexuales ha percibido que existen en la zona?",
         [
             "Abuso sexual",
             "Acoso sexual",
@@ -261,7 +339,7 @@ with st.expander("4️⃣🦥 Situaciones Relacionadas a Delitos"):
     )
 
     asaltos = st.multiselect(
-        "¿Qué tipos de asaltos considera que ocurren?",
+        "¿Qué tipos de asaltos hay en la zona?",
         [
             "Asalto a personas",
             "Asalto a comercio",
@@ -271,7 +349,7 @@ with st.expander("4️⃣🦥 Situaciones Relacionadas a Delitos"):
     )
 
     estafas = st.multiselect(
-        "¿Qué tipos de estafas ha observado?",
+        "¿Qué tipos de estafas ha observado que hay en la zona?",
         [
             "Billetes falsos",
             "Documentos falsos",
@@ -284,7 +362,7 @@ with st.expander("4️⃣🦥 Situaciones Relacionadas a Delitos"):
     )
 
     robos = st.multiselect(
-        "¿Qué tipos de robos ha identificado?",
+        "¿Qué tipos de robos ha identificado en la zona?",
         [
             "Tacha a comercio",
             "Tacha a edificaciones",
@@ -541,16 +619,18 @@ if not st.session_state.enviado:
                     sheet.append_row(datos)
                     st.session_state.enviado = True
                     st.success("✅ ¡Formulario enviado correctamente!")
-                    st.experimental_rerun()
                 except Exception:
-                    pass  # No mostrar errores al usuario
-
-
-                    
+                    st.error("❌ Hubo un error al guardar los datos. Intente nuevamente.")
+                  
 else:
-    st.success("✅ ¡Formulario enviado correctamente!")
-    if st.button("Enviar otro formulario"):
+    st.markdown("""
+    <div style='background-color:#D6EFD1; padding: 20px; border-radius: 10px; border: 2px solid #51924B; text-align: center;'>
+        <h2 style='color: #2C517A;'>✅ ¡Gracias por completar la encuesta!</h2>
+        <p style='color: #2C517A;'>Tus respuestas han sido registradas exitosamente.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if st.button("📝 Enviar otra respuesta"):
         st.session_state.enviado = False
         st.experimental_rerun()
-
 
