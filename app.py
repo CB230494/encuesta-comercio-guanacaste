@@ -45,7 +45,7 @@ st.markdown("""
 
     /* Encabezado del expander */
 div[data-testid="stExpander"] > summary {
-    background-color: #347A59 !important;
+    background-color: #ffffff !important;
     color: #FFF8DC !important;
     font-size: 28px !important;
     font-weight: 900 !important;
