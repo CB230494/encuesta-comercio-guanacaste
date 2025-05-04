@@ -630,27 +630,36 @@ if not st.session_state.enviado:
 # ==== Guardar en Google Sheets ====
 sheet = conectar_google_sheets()
 
-if sheet:
-    try:
-        sheet.append_row(datos)
-        st.session_state.enviado = True
+if not st.session_state.enviado:
+    if st.button("Enviar formulario"):
+        errores = []
 
-        st.success("✅ ¡Formulario enviado correctamente!")
+        # Validaciones...
+        # (Tu lista de errores aquí)
 
-        # Mostrar mensaje HTML también al enviar
-        st.markdown("""
-        <div style='background-color:#9DC453; padding: 20px; border-radius: 10px; border: 2px solid #51924B; text-align: center;'>
-            <h2 style='color: #2C517A;'>✅ ¡Gracias por completar la encuesta!</h2>
-            <p style='color: #2C517A;'>Tus respuestas han sido registradas exitosamente.</p>
-        </div>
-        """, unsafe_allow_html=True)
+        if errores:
+            st.error("⚠️ Faltan los siguientes campos obligatorios: " + ", ".join(errores))
+        else:
+            # ==== Guardar en Google Sheets ====
+            sheet = conectar_google_sheets()
 
-        # Mostrar botón solo si ya se envió
-        if st.button("📝 Enviar otra respuesta"):
-            st.session_state.enviado = False
-            st.experimental_rerun()
+            if sheet:
+                try:
+                    sheet.append_row(datos)
+                    st.session_state.enviado = True
 
-    except Exception:
-        st.error("❌ Hubo un error al guardar los datos. Intente nuevamente.")
+                    st.success("✅ ¡Formulario enviado correctamente!")
 
+                    st.markdown("""
+                    <div style='background-color:#9DC453; padding: 20px; border-radius: 10px; border: 2px solid #51924B; text-align: center;'>
+                        <h2 style='color: #2C517A;'>✅ ¡Gracias por completar la encuesta!</h2>
+                        <p style='color: #2C517A;'>Tus respuestas han sido registradas exitosamente.</p>
+                    </div>
+                    """, unsafe_allow_html=True)
 
+                    if st.button("📝 Enviar otra respuesta"):
+                        st.session_state.enviado = False
+                        st.experimental_rerun()
+
+                except Exception:
+                    st.error("❌ Hubo un error al guardar los datos. Intente nuevamente.")
