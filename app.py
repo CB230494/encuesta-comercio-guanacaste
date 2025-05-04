@@ -535,6 +535,9 @@ with st.expander("", expanded=False):
     )
 
 
+st.caption("Nota: TEXTOOOOO.")
+
+
 # === PARTE 7: ENVÍO Y GUARDADO DE RESPUESTAS ===
 if not st.session_state.enviado:
     if st.button("Enviar formulario"):
