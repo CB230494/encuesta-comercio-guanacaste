@@ -47,7 +47,7 @@ st.markdown("""
    .expander-title {
         background-color: #347A59;
         color: #ffffff;
-        font-size: 20px;
+        font-size: 55px;
         font-weight: bold;
         border-radius: 15px;
         padding: 15px 20px;
@@ -181,10 +181,10 @@ with st.expander("", expanded=False):
         barrio = ""
 
     edad = st.number_input("Edad:", min_value=12, max_value=120, format="%d")
-    sexo = st.selectbox("Sexo:", ["Hombre", "Mujer", "LGBTQ+", "Otro / Prefiero No decirlo"])
+    sexo = st.selectbox("Sexo:", ["","Hombre", "Mujer", "LGBTQ+", "Otro / Prefiero No decirlo"])
     escolaridad = st.selectbox("Escolaridad:", [
-        "Ninguna", "Primaria", "Primaria incompleta", "Secundaria incompleta",
-        "Secundaria completa", "Universitaria incompleta", "Universitaria", "Técnico"
+        "","Ninguna", "Primaria", "Primaria incompleta", "Secundaria incompleta",
+        "Secundaria completa", "","Universitaria incompleta", "Universitaria", "Técnico"
     ])
     tipo_local = st.selectbox("Tipo de local comercial:", [
         "Supermercado", "Pulpería / Licorera", "Restaurante / Soda", "Bar",
