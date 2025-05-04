@@ -571,7 +571,6 @@ if not st.session_state.enviado:
 
             datos = [
                 datetime.now().isoformat(),
-                canton,
                 distrito,
                 barrio,
                 edad,
