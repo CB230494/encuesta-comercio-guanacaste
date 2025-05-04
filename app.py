@@ -184,7 +184,7 @@ with st.expander("", expanded=False):
     sexo = st.selectbox("Sexo:", ["","Hombre", "Mujer", "LGBTQ+", "Otro / Prefiero No decirlo"])
     escolaridad = st.selectbox("Escolaridad:", [
         "","Ninguna", "Primaria", "Primaria incompleta", "Secundaria incompleta",
-        "Secundaria completa", "","Universitaria incompleta", "Universitaria", "Técnico"
+        "Secundaria completa", "Universitaria incompleta", "Universitaria", "Técnico"
     ])
     tipo_local = st.selectbox("Tipo de local comercial:", [
         "Supermercado", "Pulpería / Licorera", "Restaurante / Soda", "Bar",
@@ -193,33 +193,31 @@ with st.expander("", expanded=False):
     ])
     st.caption("Nota: Todas las anteriores son selección única.")
 
-    # Mapa
-    st.markdown("### Seleccione su ubicación en el mapa:")
+    # === MAPA ===
+st.markdown("### Seleccione su ubicación en el mapa:")
 
-    if "ubicacion" not in st.session_state:
-        st.session_state.ubicacion = None
+if "ubicacion" not in st.session_state:
+    st.session_state.ubicacion = None
 
-    # Crear el mapa base
-    mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
+mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-    # Si ya hay una ubicación seleccionada, agregar un marcador
-    if st.session_state.ubicacion:
-        folium.Marker(
-            location=st.session_state.ubicacion,
-            tooltip="Ubicación seleccionada",
-            icon=folium.Icon(color="blue", icon="map-marker")
-        ).add_to(mapa)
+# Agregar marcador si ya hay una ubicación seleccionada
+if st.session_state.ubicacion:
+    folium.Marker(
+        location=st.session_state.ubicacion,
+        tooltip="Ubicación seleccionada",
+        icon=folium.Icon(color="blue", icon="map-marker")
+    ).add_to(mapa)
 
-    # Mostrar mapa interactivo
-    map_click = st_folium(mapa, width=700, height=500)
+# Mostrar el mapa
+map_click = st_folium(mapa, width=700, height=500)
 
-    # Capturar clic del usuario
-    if map_click and map_click.get("last_clicked"):
-        lat = map_click["last_clicked"]["lat"]
-        lon = map_click["last_clicked"]["lng"]
-        if st.session_state.ubicacion != [lat, lon]:
-            st.session_state.ubicacion = [lat, lon]
-            st.experimental_rerun()
+# Capturar clic y actualizar ubicación (sin recargar)
+if map_click and map_click.get("last_clicked"):
+    lat = map_click["last_clicked"]["lat"]
+    lon = map_click["last_clicked"]["lng"]
+    st.session_state.ubicacion = [lat, lon]
+
 
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD ===
 st.markdown("<div class='expander-title'>Percepción de Seguridad</div>", unsafe_allow_html=True)
