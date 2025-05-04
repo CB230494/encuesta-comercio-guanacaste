@@ -186,13 +186,13 @@ with st.expander("", expanded=True):
 
         sexo = st.selectbox(
             "Sexo:",
-            ["Hombre", "Mujer", "LGBTQ+", "Otro / Prefiero No decirlo"]
+            ["","Hombre", "Mujer", "LGBTQ+", "Otro / Prefiero No decirlo"]
         )
 
         escolaridad = st.selectbox(
             "Escolaridad:",
             [
-                "Ninguna", "Primaria", "Primaria incompleta", "Secundaria incompleta",
+                "","Ninguna", "Primaria", "Primaria incompleta", "Secundaria incompleta",
                 "Secundaria completa", "Universitaria incompleta", "Universitaria", "Técnico"
             ]
         )
@@ -200,7 +200,7 @@ with st.expander("", expanded=True):
         tipo_local = st.selectbox(
             "Tipo de local comercial:",
             [
-                "Supermercado", "Pulpería / Licorera", "Restaurante / Soda", "Bar",
+                "","Supermercado", "Pulpería / Licorera", "Restaurante / Soda", "Bar",
                 "Tienda de artículos", "Gasolineras", "Servicios estéticos",
                 "Puesto de lotería", "Otro"
             ]
