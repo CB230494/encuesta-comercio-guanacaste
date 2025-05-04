@@ -216,14 +216,17 @@ with st.expander("", expanded=True):
 
         st.caption("Nota: Todas las anteriores son selección única.")
 
-    # === MAPA ===
+   # === MAPA ===
 st.markdown("### Seleccione su ubicación en el mapa:")
 
-# Crear mapa base
+# Definir ubicación inicial
 ubicacion_inicial = [10.3, -85.8]
-mapa = folium.Map(location=st.session_state.ubicacion or ubicacion_inicial, zoom_start=13)
+ubicacion_actual = st.session_state.ubicacion or ubicacion_inicial
 
-# Agregar marcador si ya se seleccionó ubicación
+# Crear mapa nuevo en cada renderizado (más confiable para móviles)
+mapa = folium.Map(location=ubicacion_actual, zoom_start=13)
+
+# Agregar marcador si hay una ubicación ya guardada
 if st.session_state.ubicacion:
     folium.Marker(
         location=st.session_state.ubicacion,
@@ -231,15 +234,21 @@ if st.session_state.ubicacion:
         icon=folium.Icon(color="blue", icon="map-marker")
     ).add_to(mapa)
 
-# Mostrar mapa
-map_click = st_folium(mapa, width=700, height=450)
+# Mostrar mapa - adaptar tamaño a pantalla
+map_click = st_folium(mapa, width="100%", height=400)
 
-# Capturar clic sin recargar
+# Capturar nuevo clic
 if map_click and map_click.get("last_clicked"):
-    st.session_state.ubicacion = [
+    nueva_ubicacion = [
         map_click["last_clicked"]["lat"],
         map_click["last_clicked"]["lng"]
     ]
+
+    # Guardar y dar retroalimentación visual
+    if nueva_ubicacion != st.session_state.ubicacion:
+        st.session_state.ubicacion = nueva_ubicacion
+        st.toast("📍 Ubicación seleccionada", icon="🌍")
+
 
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD ===
 st.markdown("<div class='expander-title'>Percepción de Seguridad</div>", unsafe_allow_html=True)
