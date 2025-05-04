@@ -173,6 +173,7 @@ with st.expander("", expanded=False):
         ["", "Tamarindo", "Cabo Velas (Flamingo)", "Tempate"]
     )
 
+    # Subopciones por distrito    
     if distrito == "Tamarindo":
         barrio = st.selectbox("Barrio", ["Tamarindo Centro", "Villareal"])
     elif distrito == "Cabo Velas (Flamingo)":
@@ -219,6 +220,7 @@ with st.expander("", expanded=False):
     if "mapa" not in st.session_state:
         st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
+    # Siempre crear un nuevo mapa para evitar que se estire
     mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
     if st.session_state.ubicacion:
