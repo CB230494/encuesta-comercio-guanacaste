@@ -169,7 +169,7 @@ if st.session_state.enviado:
 
 else:
     st.markdown("<div class='expander-title'>Datos Demográficos</div>", unsafe_allow_html=True)
-with st.expander("", expanded=false):
+with st.expander("", expanded=False):
         canton = "Santa Cruz"
 
         distrito = st.selectbox(
@@ -252,7 +252,7 @@ if map_click and map_click.get("last_clicked"):
 
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD ===
 st.markdown("<div class='expander-title'>Percepción de Seguridad</div>", unsafe_allow_html=True)
-with st.expander("", expanded=false):
+with st.expander("", expanded=False):
     percepcion_seguridad = st.radio(
         "¿Qué tan seguro(a) se siente en esta zona comercial?",
         ["Muy seguro(a)", "Seguro(a)", "Ni seguro(a) Ni inseguro(a)", "Inseguro(a)", "Muy inseguro(a)"]
@@ -279,7 +279,7 @@ with st.expander("", expanded=false):
 
 # === PARTE 4: FACTORES DE RIESGO SOCIAL ===
 st.markdown("<div class='expander-title'>Factores de Riesgo Social</div>", unsafe_allow_html=True)
-with st.expander("", expanded=false):
+with st.expander("", expanded=False):
     factores_sociales = st.multiselect(
         "¿Cuáles de los siguientes factores afectan la seguridad en su zona comercial?",
         [
@@ -330,7 +330,7 @@ with st.expander("", expanded=false):
     
 # === PARTE 5: SITUACIONES RELACIONADAS A DELITOS ===
 st.markdown("<div class='expander-title'>Situaciones Relacionadas a Delitos</div>", unsafe_allow_html=True)
-with st.expander("", expanded=false):
+with st.expander("", expanded=False):
     delitos_zona = st.multiselect(
         "¿Seleccine los delitos que considere que ocurren alrededor de su comercio?",
         [
