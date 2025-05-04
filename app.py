@@ -187,7 +187,7 @@ with st.expander("", expanded=False):
         "Secundaria completa", "Universitaria incompleta", "Universitaria", "Técnico"
     ])
     tipo_local = st.selectbox("Tipo de local comercial:", [
-        "Supermercado", "Pulpería / Licorera", "Restaurante / Soda", "Bar",
+        "","Supermercado", "Pulpería / Licorera", "Restaurante / Soda", "Bar",
         "Tienda de artículos", "Gasolineras", "Servicios estéticos",
         "Puesto de lotería", "Otro"
     ])
