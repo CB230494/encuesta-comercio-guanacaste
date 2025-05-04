@@ -319,7 +319,7 @@ with st.expander("", expanded=False):
         [
             "Búnker (espacio cerrado)",
             "Vía pública",
-            "Exprés"
+            "Exprés",
             "Recinto privado"
         ]
     )
