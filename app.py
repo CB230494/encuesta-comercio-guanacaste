@@ -627,21 +627,23 @@ if not st.session_state.enviado:
  # ==== Guardar en Google Sheets ====
             sheet = conectar_google_sheets()
 
-            if sheet:
-                try:
-                    sheet.append_row(datos)
-                    st.session_state.enviado = True
-                    st.success("✅ ¡Formulario enviado correctamente!")
-                except Exception:
-                    st.error("❌ Hubo un error al guardar los datos. Intente nuevamente.")
-                  
-else:
-    st.markdown("""
-    <div style='background-color:#9DC453; padding: 20px; border-radius: 10px; border: 2px solid #51924B; text-align: center;'>
-        <h2 style='color: #2C517A;'>✅ ¡Gracias por completar la encuesta!</h2>
-        <p style='color: #2C517A;'>Tus respuestas han sido registradas exitosamente.</p>
-    </div>
-    """, unsafe_allow_html=True)
+if sheet:
+    try:
+        sheet.append_row(datos)
+        st.session_state.enviado = True
+
+        st.success("✅ ¡Formulario enviado correctamente!")
+
+        # Mostrar mensaje HTML también al enviar
+        st.markdown("""
+        <div style='background-color:#9DC453; padding: 20px; border-radius: 10px; border: 2px solid #51924B; text-align: center;'>
+            <h2 style='color: #2C517A;'>✅ ¡Gracias por completar la encuesta!</h2>
+            <p style='color: #2C517A;'>Tus respuestas han sido registradas exitosamente.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    except Exception:
+        st.error("❌ Hubo un error al guardar los datos. Intente nuevamente.")
 
     if st.button("📝 Enviar otra respuesta"):
         st.session_state.enviado = False
