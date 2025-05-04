@@ -217,9 +217,14 @@ with st.expander("", expanded=False):
     # === MAPA ===
     st.markdown("### Seleccione su ubicación en el mapa:")
 
-    if "mapa" not in st.session_state:
-        st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
-
+       mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
+    if st.session_state.get("ubicacion"):
+        folium.Marker(
+            location=st.session_state.ubicacion,
+            tooltip="Ubicación seleccionada",
+            icon=folium.Icon(color="blue", icon="map-marker")
+        ).add_to(mapa)
+        
     # Siempre crear un nuevo mapa para evitar que se estire
     mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
