@@ -164,10 +164,6 @@ La información que nos suministras es completamente confidencial y se emplea ex
 
 # === PARTE 2: DATOS DEMOGRÁFICOS Y MAPA ===
 
-if st.session_state.enviado:
-    st.success("✅ ¡Formulario enviado exitosamente!")
-
-else:
     with st.expander("Datos Demográficos", expanded=False):
     st.markdown("<div class='expander-title'>Datos Demográficos</div>", unsafe_allow_html=True)
 
