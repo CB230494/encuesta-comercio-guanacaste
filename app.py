@@ -534,10 +534,6 @@ with st.expander("", expanded=False):
         "¿Desea agregar alguna otra información que considere pertinente?"
     )
 
-
-st.caption("Sembremos Seguridad-2025")
-
-
 # === PARTE 7: ENVÍO Y GUARDADO DE RESPUESTAS ===
 if not st.session_state.enviado:
     if st.button("Enviar formulario"):
@@ -645,9 +641,5 @@ if not st.session_state.enviado:
 
 
 st.markdown("<p style='text-align: center; color:#88E145; font-size:10px'>Sembremos Seguridad-2025</p>", unsafe_allow_html=True)
-st.markdown(
-    "<p style='text-align: center; color: #88E145; font-size: 10px;'>Sembremos Seguridad - 2025</p>",
-    unsafe_allow_html=True
-)
 
 
