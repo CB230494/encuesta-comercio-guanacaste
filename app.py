@@ -47,9 +47,9 @@ st.markdown("""
    .expander-title {
         background-color: #347A59;
         color: #ffffff;
-        font-size: 55px;
+        font-size: 18px;
         font-weight: bold;
-        border-radius: 15px;
+        border-radius: 10px;
         padding: 15px 20px;
         margin-bottom: -20px;
         text-align: left;
