@@ -223,10 +223,15 @@ st.markdown("### Seleccione su ubicación en el mapa:")
 if "mapa" not in st.session_state:
     st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-# Clonar el mapa base para no sobrescribir el original
+# Siempre crear un nuevo mapa con el marcador actualizado
 mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-# Agregar marcador si hay una ubicación seleccionada
+if map_click and map_click.get("last_clicked"):
+    lat = map_click["last_clicked"]["lat"]
+    lon = map_click["last_clicked"]["lng"]
+    st.session_state.ubicacion = [lat, lon]
+
+# Si hay una ubicación guardada, mostrar marcador
 if st.session_state.ubicacion:
     folium.Marker(
         location=st.session_state.ubicacion,
