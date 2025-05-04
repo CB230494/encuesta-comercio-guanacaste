@@ -166,14 +166,11 @@ La información que nos suministras es completamente confidencial y se emplea ex
 st.markdown("<div class='expander-title'>Datos Demográficos</div>", unsafe_allow_html=True)
 with st.expander("", expanded=False):
 
-    canton = "Santa Cruz"
-
     distrito = st.selectbox(
         "Distrito:",
         ["", "Tamarindo", "Cabo Velas (Flamingo)", "Tempate"]
     )
 
-    # Subopciones por distrito    
     if distrito == "Tamarindo":
         barrio = st.selectbox("Barrio", ["Tamarindo Centro", "Villareal"])
     elif distrito == "Cabo Velas (Flamingo)":
@@ -183,35 +180,17 @@ with st.expander("", expanded=False):
     else:
         barrio = ""
 
-    edad = st.number_input(
-        "Edad:",
-        min_value=12,
-        max_value=120,
-        format="%d"
-    )
-
-    sexo = st.selectbox(
-        "Sexo:",
-        ["Hombre", "Mujer", "LGBTQ+", "Otro / Prefiero No decirlo"]
-    )
-
-    escolaridad = st.selectbox(
-        "Escolaridad:",
-        [
-            "Ninguna", "Primaria", "Primaria incompleta", "Secundaria incompleta",
-            "Secundaria completa", "Universitaria incompleta", "Universitaria", "Técnico"
-        ]
-    )
-
-    tipo_local = st.selectbox(
-        "Tipo de local comercial:",
-        [
-            "Supermercado", "Pulpería / Licorera", "Restaurante / Soda", "Bar",
-            "Tienda de artículos", "Gasolineras", "Servicios estéticos",
-            "Puesto de lotería", "Otro"
-        ]
-    )
-
+    edad = st.number_input("Edad:", min_value=12, max_value=120, format="%d")
+    sexo = st.selectbox("Sexo:", ["Hombre", "Mujer", "LGBTQ+", "Otro / Prefiero No decirlo"])
+    escolaridad = st.selectbox("Escolaridad:", [
+        "Ninguna", "Primaria", "Primaria incompleta", "Secundaria incompleta",
+        "Secundaria completa", "Universitaria incompleta", "Universitaria", "Técnico"
+    ])
+    tipo_local = st.selectbox("Tipo de local comercial:", [
+        "Supermercado", "Pulpería / Licorera", "Restaurante / Soda", "Bar",
+        "Tienda de artículos", "Gasolineras", "Servicios estéticos",
+        "Puesto de lotería", "Otro"
+    ])
     st.caption("Nota: Todas las anteriores son selección única.")
 
     # Mapa
@@ -234,6 +213,7 @@ with st.expander("", expanded=False):
         if st.session_state.get("ubicacion") != [lat, lon]:
             st.session_state.ubicacion = [lat, lon]
             st.experimental_rerun()
+
 
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD ===
 st.markdown("<div class='expander-title'>Percepción de Seguridad</div>", unsafe_allow_html=True)
