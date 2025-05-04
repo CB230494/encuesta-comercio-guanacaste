@@ -119,8 +119,16 @@ label, .stMarkdown p {
     font-weight: 600;
 }
 
-    </style>
+    /* Limitar altura del contenedor del mapa en pantallas pequeñas */
+@media only screen and (max-width: 768px) {
+    iframe {
+        height: 300px !important;
+        max-height: 300px !important;
+    }
+}
+</style>
 """, unsafe_allow_html=True)
+
 
 from PIL import Image
 import streamlit as st
@@ -227,7 +235,7 @@ if st.session_state.ubicacion:
     ).add_to(mapa)
 
 # Mostrar el mapa sin hacer crecer el contenedor
-map_click = st_folium(mapa, width=700, height=500)
+map_click = st_folium(mapa, width=700, height=300)
 
 # Capturar clic del usuario
 if map_click and map_click.get("last_clicked"):
