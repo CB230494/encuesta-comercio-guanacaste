@@ -645,5 +645,5 @@ if not st.session_state.enviado:
 
 
 st.caption("textito")
-st.markdown("<p style='color:#ffffff; font-size:18px;'>Texto personalizado con HTML</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center'color:#88E145; font-size:10px;'>Sembremos Seguridad-2025</p>", unsafe_allow_html=True)
 
