@@ -216,16 +216,14 @@ with st.expander("", expanded=True):
 
         st.caption("Nota: Todas las anteriores son selección única.")
 
-      # === MAPA ===
+    # === MAPA ===
 st.markdown("### Seleccione su ubicación en el mapa:")
 
-# Si no hay mapa aún, crear uno
-if "mapa" not in st.session_state:
-    st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
+# Crear mapa base
+ubicacion_inicial = [10.3, -85.8]
+mapa = folium.Map(location=st.session_state.ubicacion or ubicacion_inicial, zoom_start=13)
 
-# Si ya se seleccionó una ubicación, agregar marcador
-mapa = folium.Map(location=st.session_state.ubicacion if st.session_state.ubicacion else [10.3, -85.8], zoom_start=13)
-
+# Agregar marcador si ya se seleccionó ubicación
 if st.session_state.ubicacion:
     folium.Marker(
         location=st.session_state.ubicacion,
@@ -233,15 +231,15 @@ if st.session_state.ubicacion:
         icon=folium.Icon(color="blue", icon="map-marker")
     ).add_to(mapa)
 
-# Mostrar mapa y capturar clic
-map_click = st_folium(mapa, width=700, height=450, returned_objects=["last_clicked"])
+# Mostrar mapa
+map_click = st_folium(mapa, width=700, height=450)
 
-# Guardar la ubicación con un solo clic
-if map_click and map_click["last_clicked"] is not None:
-    lat = map_click["last_clicked"]["lat"]
-    lon = map_click["last_clicked"]["lng"]
-    st.session_state.ubicacion = [lat, lon]
-    st.experimental_rerun()  # Recargar para mostrar el marcador de inmediato
+# Capturar clic sin recargar
+if map_click and map_click.get("last_clicked"):
+    st.session_state.ubicacion = [
+        map_click["last_clicked"]["lat"],
+        map_click["last_clicked"]["lng"]
+    ]
 
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD ===
 st.markdown("<div class='expander-title'>Percepción de Seguridad</div>", unsafe_allow_html=True)
