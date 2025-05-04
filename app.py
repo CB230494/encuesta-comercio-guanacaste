@@ -394,7 +394,7 @@ with st.expander("", expanded=False):
     st.caption("Nota: selección múltiple.")
 
 st.markdown("<div class='expander-title'>Información Adicional</div>", unsafe_allow_html=True)
-with st.expander("", expanded=True):
+with st.expander("", expanded=False):
     st.markdown("""
     **Información adicional**
 
