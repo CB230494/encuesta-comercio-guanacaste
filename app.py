@@ -548,7 +548,7 @@ if not st.session_state.enviado:
     if st.button("Enviar formulario"):
         errores = []
 
-        # Validaciones básicas
+        # Validaciones obligatorias
         if not st.session_state.ubicacion:
             errores.append("Ubicación en el mapa")
         if not distrito:
@@ -582,7 +582,6 @@ if not st.session_state.enviado:
             lat, lon = st.session_state.ubicacion
             ubicacion_url = f"https://www.google.com/maps?q={lat},{lon}"
 
-            # Preparar fila de datos
             datos = [
                 datetime.now().isoformat(),
                 canton,
@@ -595,9 +594,9 @@ if not st.session_state.enviado:
                 percepcion_seguridad,
                 ", ".join(factores_inseguridad) if factores_inseguridad else "",
                 ", ".join(factores_sociales) if factores_sociales else "",
-                "",  # Inversión social (lo puedes agregar si quieres aquí en estructura)
-                "",  # Consumo de drogas
-                "",  # Búnkers
+                ", ".join(falta_de_inversion) if falta_de_inversion else "",
+                ", ".join(consumo_drogas) if consumo_drogas else "",
+                ", ".join(bunker) if bunker else "",
                 ", ".join(delitos_zona) if delitos_zona else "",
                 ", ".join(venta_drogas) if venta_drogas else "",
                 ", ".join(delitos_vida) if delitos_vida else "",
@@ -624,23 +623,6 @@ if not st.session_state.enviado:
                 info_adicional
             ]
 
- # ==== Guardar en Google Sheets ====
-            sheet = conectar_google_sheets()
-
-# ==== Guardar en Google Sheets ====
-sheet = conectar_google_sheets()
-
-if not st.session_state.enviado:
-    if st.button("Enviar formulario"):
-        errores = []
-
-        # Validaciones...
-        # (Tu lista de errores aquí)
-
-        if errores:
-            st.error("⚠️ Faltan los siguientes campos obligatorios: " + ", ".join(errores))
-        else:
-            # ==== Guardar en Google Sheets ====
             sheet = conectar_google_sheets()
 
             if sheet:
@@ -648,8 +630,10 @@ if not st.session_state.enviado:
                     sheet.append_row(datos)
                     st.session_state.enviado = True
 
+                    # ✅ Mensaje de éxito normal
                     st.success("✅ ¡Formulario enviado correctamente!")
 
+                    # ✅ Bloque visual adicional
                     st.markdown("""
                     <div style='background-color:#9DC453; padding: 20px; border-radius: 10px; border: 2px solid #51924B; text-align: center;'>
                         <h2 style='color: #2C517A;'>✅ ¡Gracias por completar la encuesta!</h2>
@@ -657,6 +641,7 @@ if not st.session_state.enviado:
                     </div>
                     """, unsafe_allow_html=True)
 
+                    # ✅ Botón para reiniciar
                     if st.button("📝 Enviar otra respuesta"):
                         st.session_state.enviado = False
                         st.experimental_rerun()
