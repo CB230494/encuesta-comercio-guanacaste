@@ -219,19 +219,10 @@ with st.expander("", expanded=True):
        # === MAPA ===
 st.markdown("### Seleccione su ubicación en el mapa:")
 
-# Crear el mapa solo una vez
-if "mapa" not in st.session_state:
-    st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
-
-# Siempre crear un nuevo mapa con el marcador actualizado
+# Crear el mapa base
 mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-if map_click and map_click.get("last_clicked"):
-    lat = map_click["last_clicked"]["lat"]
-    lon = map_click["last_clicked"]["lng"]
-    st.session_state.ubicacion = [lat, lon]
-
-# Si hay una ubicación guardada, mostrar marcador
+# Agregar marcador si ya hay una ubicación seleccionada
 if st.session_state.ubicacion:
     folium.Marker(
         location=st.session_state.ubicacion,
@@ -239,10 +230,10 @@ if st.session_state.ubicacion:
         icon=folium.Icon(color="blue", icon="map-marker")
     ).add_to(mapa)
 
-# Mostrar el mapa sin hacer crecer el contenedor
+# Mostrar el mapa y capturar clic
 map_click = st_folium(mapa, width=700, height=500)
 
-# Capturar clic del usuario
+# Actualizar ubicación si el usuario hace clic
 if map_click and map_click.get("last_clicked"):
     lat = map_click["last_clicked"]["lat"]
     lon = map_click["last_clicked"]["lng"]
