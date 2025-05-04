@@ -164,8 +164,9 @@ La información que nos suministras es completamente confidencial y se emplea ex
 
 # === PARTE 2: DATOS DEMOGRÁFICOS Y MAPA ===
 st.markdown("<div class='expander-title'>Datos Demográficos</div>", unsafe_allow_html=True)
+
 with st.expander("", expanded=False):
-      distrito = st.selectbox(
+    distrito = st.selectbox(
         "Distrito:",
         ["", "Tamarindo", "Cabo Velas (Flamingo)", "Tempate"]
     )
@@ -214,7 +215,6 @@ with st.expander("", expanded=False):
         if st.session_state.ubicacion != [lat, lon]:
             st.session_state.ubicacion = [lat, lon]
             st.experimental_rerun()
-
 
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD ===
 st.markdown("<div class='expander-title'>Percepción de Seguridad</div>", unsafe_allow_html=True)
