@@ -535,7 +535,7 @@ with st.expander("", expanded=False):
     )
 
 
-st.caption("Nota: TEXTOOOOO.")
+st.caption("Sembremos Seguridad-2025")
 
 
 # === PARTE 7: ENVÍO Y GUARDADO DE RESPUESTAS ===
