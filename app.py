@@ -563,8 +563,6 @@ if not st.session_state.enviado:
             errores.append("Percepción de seguridad")
         if not victima:
             errores.append("Victimización")
-        if not horario_delito:
-            errores.append("Horario del hecho")
         if not exigencia_cuota:
             errores.append("Exigencia de cuota")
         if not opinion_fp:
