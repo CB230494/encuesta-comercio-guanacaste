@@ -644,6 +644,5 @@ if not st.session_state.enviado:
                     st.error("❌ Hubo un error al guardar los datos. Intente nuevamente.")
 
 
-st.caption("textito")
-st.markdown("<p style='text-align: center'; color:#88E145; font-size:10px;'>Sembremos Seguridad-2025</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center'; color:#88E145; font-size:5px;'>Sembremos Seguridad-2025</p>", unsafe_allow_html=True)
 
