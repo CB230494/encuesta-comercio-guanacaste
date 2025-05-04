@@ -168,86 +168,77 @@ if st.session_state.enviado:
     st.success("✅ ¡Formulario enviado exitosamente!")
 
 else:
+    with st.expander("Datos Demográficos", expanded=False):
     st.markdown("<div class='expander-title'>Datos Demográficos</div>", unsafe_allow_html=True)
-with st.expander("", expanded=False):
-        canton = "Santa Cruz"
 
-        distrito = st.selectbox(
-            "Distrito:",
-            ["", "Tamarindo", "Cabo Velas (Flamingo)", "Tempate"]
-        )
+    canton = "Santa Cruz"
 
-# Subopciones por distrito    
-        if distrito == "Tamarindo":
-            barrio = st.selectbox("Barrio",["Tamarindo Centro","Villareal"])
-        elif distrito == "Cabo Velas (Flamingo)":
-            barrio = st.selectbox("Barrio",["Flamingo", "Brasilito"])
-        elif distrito == "Tempate":
-            barrio = st.selectbox("Barrio",["Surf Side", "Potrero"])
-        
-        edad = st.number_input(
-            "Edad:",
-            min_value=12,
-            max_value=120,
-            format="%d"
-        )
+    distrito = st.selectbox(
+        "Distrito:",
+        ["", "Tamarindo", "Cabo Velas (Flamingo)", "Tempate"]
+    )
 
-        sexo = st.selectbox(
-            "Sexo:",
-            ["","Hombre", "Mujer", "LGBTQ+", "Otro / Prefiero No decirlo"]
-        )
+    if distrito == "Tamarindo":
+        barrio = st.selectbox("Barrio", ["Tamarindo Centro", "Villareal"])
+    elif distrito == "Cabo Velas (Flamingo)":
+        barrio = st.selectbox("Barrio", ["Flamingo", "Brasilito"])
+    elif distrito == "Tempate":
+        barrio = st.selectbox("Barrio", ["Surf Side", "Potrero"])
+    else:
+        barrio = ""
 
-        escolaridad = st.selectbox(
-            "Escolaridad:",
-            [
-                "","Ninguna", "Primaria", "Primaria incompleta", "Secundaria incompleta",
-                "Secundaria completa", "Universitaria incompleta", "Universitaria", "Técnico"
-            ]
-        )
+    edad = st.number_input(
+        "Edad:",
+        min_value=12,
+        max_value=120,
+        format="%d"
+    )
 
-        tipo_local = st.selectbox(
-            "Tipo de local comercial:",
-            [
-                "","Supermercado", "Pulpería / Licorera", "Restaurante / Soda", "Bar",
-                "Tienda de artículos", "Gasolineras", "Servicios estéticos",
-                "Puesto de lotería", "Otro"
-            ]
-        )
+    sexo = st.selectbox(
+        "Sexo:",
+        ["Hombre", "Mujer", "LGBTQ+", "Otro / Prefiero No decirlo"]
+    )
 
-        st.caption("Nota: Todas las anteriores son selección única.")
+    escolaridad = st.selectbox(
+        "Escolaridad:",
+        [
+            "Ninguna", "Primaria", "Primaria incompleta", "Secundaria incompleta",
+            "Secundaria completa", "Universitaria incompleta", "Universitaria", "Técnico"
+        ]
+    )
 
-   # === MAPA ===
-st.markdown("### Seleccione su ubicación en el mapa:")
+    tipo_local = st.selectbox(
+        "Tipo de local comercial:",
+        [
+            "Supermercado", "Pulpería / Licorera", "Restaurante / Soda", "Bar",
+            "Tienda de artículos", "Gasolineras", "Servicios estéticos",
+            "Puesto de lotería", "Otro"
+        ]
+    )
 
-# Definir ubicación inicial
-ubicacion_inicial = [10.3, -85.8]
-ubicacion_actual = st.session_state.ubicacion or ubicacion_inicial
+    st.caption("Nota: Todas las anteriores son selección única.")
 
-# Crear mapa nuevo en cada renderizado (más confiable para móviles)
-mapa = folium.Map(location=ubicacion_actual, zoom_start=13)
+    # === MAPA ===
+    st.markdown("### Seleccione su ubicación en el mapa:")
 
-# Agregar marcador si hay una ubicación ya guardada
-if st.session_state.ubicacion:
-    folium.Marker(
-        location=st.session_state.ubicacion,
-        tooltip="Ubicación seleccionada",
-        icon=folium.Icon(color="blue", icon="map-marker")
-    ).add_to(mapa)
+    if "mapa" not in st.session_state:
+        st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-# Mostrar mapa - adaptar tamaño a pantalla
-map_click = st_folium(mapa, width="100%", height=400)
+    mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-# Capturar nuevo clic
-if map_click and map_click.get("last_clicked"):
-    nueva_ubicacion = [
-        map_click["last_clicked"]["lat"],
-        map_click["last_clicked"]["lng"]
-    ]
+    if st.session_state.ubicacion:
+        folium.Marker(
+            location=st.session_state.ubicacion,
+            tooltip="Ubicación seleccionada",
+            icon=folium.Icon(color="blue", icon="map-marker")
+        ).add_to(mapa)
 
-    # Guardar y dar retroalimentación visual
-    if nueva_ubicacion != st.session_state.ubicacion:
-        st.session_state.ubicacion = nueva_ubicacion
-        st.toast("📍 Ubicación seleccionada", icon="🌍")
+    map_click = st_folium(mapa, width=700, height=500)
+
+    if map_click and map_click.get("last_clicked"):
+        lat = map_click["last_clicked"]["lat"]
+        lon = map_click["last_clicked"]["lng"]
+        st.session_state.ubicacion = [lat, lon]
 
 
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD ===
