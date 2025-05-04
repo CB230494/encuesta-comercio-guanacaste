@@ -627,6 +627,9 @@ if not st.session_state.enviado:
  # ==== Guardar en Google Sheets ====
             sheet = conectar_google_sheets()
 
+# ==== Guardar en Google Sheets ====
+sheet = conectar_google_sheets()
+
 if sheet:
     try:
         sheet.append_row(datos)
@@ -642,10 +645,12 @@ if sheet:
         </div>
         """, unsafe_allow_html=True)
 
+        # Mostrar botón solo si ya se envió
+        if st.button("📝 Enviar otra respuesta"):
+            st.session_state.enviado = False
+            st.experimental_rerun()
+
     except Exception:
         st.error("❌ Hubo un error al guardar los datos. Intente nuevamente.")
 
-    if st.button("📝 Enviar otra respuesta"):
-        st.session_state.enviado = False
-        st.experimental_rerun()
 
