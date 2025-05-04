@@ -166,7 +166,7 @@ La información que nos suministras es completamente confidencial y se emplea ex
 st.markdown("<div class='expander-title'>Datos Demográficos</div>", unsafe_allow_html=True)
 with st.expander("", expanded=False):
 
-    distrito = st.selectbox(
+      distrito = st.selectbox(
         "Distrito:",
         ["", "Tamarindo", "Cabo Velas (Flamingo)", "Tempate"]
     )
@@ -196,8 +196,11 @@ with st.expander("", expanded=False):
     # Mapa
     st.markdown("### Seleccione su ubicación en el mapa:")
 
+    if "ubicacion" not in st.session_state:
+        st.session_state.ubicacion = None
+
     mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
-    if st.session_state.get("ubicacion"):
+    if st.session_state.ubicacion:
         folium.Marker(
             location=st.session_state.ubicacion,
             tooltip="Ubicación seleccionada",
@@ -209,8 +212,7 @@ with st.expander("", expanded=False):
     if map_click and map_click.get("last_clicked"):
         lat = map_click["last_clicked"]["lat"]
         lon = map_click["last_clicked"]["lng"]
-
-        if st.session_state.get("ubicacion") != [lat, lon]:
+        if st.session_state.ubicacion != [lat, lon]:
             st.session_state.ubicacion = [lat, lon]
             st.experimental_rerun()
 
