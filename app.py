@@ -208,26 +208,32 @@ with st.expander("", expanded=True):
 
         st.caption("Nota: Todas las anteriores son selección única.")
 
-        # === MAPA ===
-        st.markdown("### Seleccione su ubicación en el mapa:")
+       # === MAPA ===
+st.markdown("### Seleccione su ubicación en el mapa:")
 
-        if "mapa" not in st.session_state:
-            st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
+# Crear el mapa solo una vez
+if "mapa" not in st.session_state:
+    st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-        if st.session_state.ubicacion:
-            st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
-            folium.Marker(
-                location=st.session_state.ubicacion,
-                tooltip="Ubicación seleccionada",
-                icon=folium.Icon(color="blue", icon="map-marker")
-            ).add_to(st.session_state.mapa)
+# Clonar el mapa base para no sobrescribir el original
+mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-        map_click = st_folium(st.session_state.mapa, width=700, height=500)
+# Agregar marcador si hay una ubicación seleccionada
+if st.session_state.ubicacion:
+    folium.Marker(
+        location=st.session_state.ubicacion,
+        tooltip="Ubicación seleccionada",
+        icon=folium.Icon(color="blue", icon="map-marker")
+    ).add_to(mapa)
 
-        if map_click and map_click.get("last_clicked"):
-            lat = map_click["last_clicked"]["lat"]
-            lon = map_click["last_clicked"]["lng"]
-            st.session_state.ubicacion = [lat, lon]
+# Mostrar el mapa sin hacer crecer el contenedor
+map_click = st_folium(mapa, width=700, height=500)
+
+# Capturar clic del usuario
+if map_click and map_click.get("last_clicked"):
+    lat = map_click["last_clicked"]["lat"]
+    lon = map_click["last_clicked"]["lng"]
+    st.session_state.ubicacion = [lat, lon]
 
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD ===
 st.markdown("<div class='expander-title'>Percepción de Seguridad</div>", unsafe_allow_html=True)
