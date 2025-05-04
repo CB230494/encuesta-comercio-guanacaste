@@ -214,21 +214,11 @@ with st.expander("", expanded=False):
 
     st.caption("Nota: Todas las anteriores son selección única.")
 
-    # === MAPA ===
+    # Mapa
     st.markdown("### Seleccione su ubicación en el mapa:")
 
-       mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
-    if st.session_state.get("ubicacion"):
-        folium.Marker(
-            location=st.session_state.ubicacion,
-            tooltip="Ubicación seleccionada",
-            icon=folium.Icon(color="blue", icon="map-marker")
-        ).add_to(mapa)
-        
-    # Siempre crear un nuevo mapa para evitar que se estire
     mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
-
-    if st.session_state.ubicacion:
+    if st.session_state.get("ubicacion"):
         folium.Marker(
             location=st.session_state.ubicacion,
             tooltip="Ubicación seleccionada",
@@ -240,8 +230,10 @@ with st.expander("", expanded=False):
     if map_click and map_click.get("last_clicked"):
         lat = map_click["last_clicked"]["lat"]
         lon = map_click["last_clicked"]["lng"]
-        st.session_state.ubicacion = [lat, lon]
 
+        if st.session_state.get("ubicacion") != [lat, lon]:
+            st.session_state.ubicacion = [lat, lon]
+            st.experimental_rerun()
 
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD ===
 st.markdown("<div class='expander-title'>Percepción de Seguridad</div>", unsafe_allow_html=True)
