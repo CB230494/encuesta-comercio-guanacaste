@@ -199,7 +199,10 @@ with st.expander("", expanded=False):
     if "ubicacion" not in st.session_state:
         st.session_state.ubicacion = None
 
+    # Crear el mapa base
     mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
+
+    # Si ya hay una ubicación seleccionada, agregar un marcador
     if st.session_state.ubicacion:
         folium.Marker(
             location=st.session_state.ubicacion,
@@ -207,8 +210,10 @@ with st.expander("", expanded=False):
             icon=folium.Icon(color="blue", icon="map-marker")
         ).add_to(mapa)
 
+    # Mostrar mapa interactivo
     map_click = st_folium(mapa, width=700, height=500)
 
+    # Capturar clic del usuario
     if map_click and map_click.get("last_clicked"):
         lat = map_click["last_clicked"]["lat"]
         lon = map_click["last_clicked"]["lng"]
