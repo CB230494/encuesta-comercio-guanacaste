@@ -219,16 +219,14 @@ with st.expander("", expanded=True):
        # === MAPA ===
 st.markdown("### Seleccione su ubicación en el mapa:")
 
-# Inicializar valores si no existen
-if "mapa_zoom" not in st.session_state:
-    st.session_state.mapa_zoom = 13
-if "mapa_centro" not in st.session_state:
-    st.session_state.mapa_centro = [10.3, -85.8]
+# Crear el mapa solo una vez
+if "mapa" not in st.session_state:
+    st.session_state.mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-# Crear el mapa con el centro y zoom actuales
-mapa = folium.Map(location=st.session_state.mapa_centro, zoom_start=st.session_state.mapa_zoom)
+# Clonar el mapa base para no sobrescribir el original
+mapa = folium.Map(location=[10.3, -85.8], zoom_start=13)
 
-# Agregar marcador si ya se seleccionó una ubicación
+# Agregar marcador si hay una ubicación seleccionada
 if st.session_state.ubicacion:
     folium.Marker(
         location=st.session_state.ubicacion,
@@ -236,20 +234,14 @@ if st.session_state.ubicacion:
         icon=folium.Icon(color="blue", icon="map-marker")
     ).add_to(mapa)
 
-# Mostrar el mapa y capturar interacciones
-map_click = st_folium(mapa, width=700, height=300)
+# Mostrar el mapa sin hacer crecer el contenedor
+map_click = st_folium(mapa, width=700, height=500)
 
-# Si se hizo clic, guardar nueva ubicación y centro
+# Capturar clic del usuario
 if map_click and map_click.get("last_clicked"):
     lat = map_click["last_clicked"]["lat"]
     lon = map_click["last_clicked"]["lng"]
     st.session_state.ubicacion = [lat, lon]
-
-    # Guardar nueva posición central y nivel de zoom actual
-    if "map_center" in map_click:
-        st.session_state.mapa_centro = map_click["map_center"]
-    if "zoom" in map_click:
-        st.session_state.mapa_zoom = map_click["zoom"]
 
 # === PARTE 3: PERCEPCIÓN DE SEGURIDAD ===
 st.markdown("<div class='expander-title'>Percepción de Seguridad</div>", unsafe_allow_html=True)
