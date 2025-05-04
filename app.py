@@ -642,3 +642,7 @@ if not st.session_state.enviado:
 
                 except Exception:
                     st.error("❌ Hubo un error al guardar los datos. Intente nuevamente.")
+
+
+st.caption("textito")
+
