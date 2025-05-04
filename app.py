@@ -163,9 +163,8 @@ La información que nos suministras es completamente confidencial y se emplea ex
 """)
 
 # === PARTE 2: DATOS DEMOGRÁFICOS Y MAPA ===
-
-with st.expander("Datos Demográficos", expanded=False):
-    st.markdown("<div class='expander-title'>Datos Demográficos</div>", unsafe_allow_html=True)
+st.markdown("<div class='expander-title'>Datos Demográficos</div>", unsafe_allow_html=True)
+with st.expander("", expanded=False):
 
     canton = "Santa Cruz"
 
